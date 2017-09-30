@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_big">16dp</dimen>
+    <dimen name="margin_normal">10dp</dimen>
+    <dimen name="margin_mid">5dp</dimen>
+
+    <dimen name="h1">16sp</dimen>
+    <dimen name="h2">15sp</dimen>
+    <dimen name="p">13sp</dimen>
+
+    <dimen name="height_toolbar">56dp</dimen>
+    <dimen name="height_button">36dp</dimen>
+
+    <dimen name="avatar">36dp</dimen>
+    <dimen name="icon">14dp</dimen>
+    <dimen name="actionicon">24dp</dimen>
+
+</resources>

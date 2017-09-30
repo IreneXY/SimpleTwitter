@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">SimpleTwitter</string>
+
+    <string name="twitter_oauth_scheme" translatable="false"></string>
+    <string name="twitter_oauth_host" translatable="false">mintminter.com</string>
+    <string name="fullcallback" translatable="false">intent://%s#Intent;action=android.intent.action.VIEW;scheme=%s;package=%s;S.browser_fallback_url=%s;end</string>
+
+    <string name="loading">Loading...</string>
+    <string name="dot">U+2022</string>
+</resources>
