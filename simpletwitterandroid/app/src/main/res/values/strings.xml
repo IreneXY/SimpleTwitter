@@ -11,4 +11,9 @@
     <string name="tweet">Tweet</string>
     <string name="compose_hint">What\'s happening?</string>
     <string name="login">Log In With Twitter</string>
+    <string name="draft_title">Draft founded</string>
+    <string name="draft_des">Do you want to save your draft?</string>
+    <string name="draft_yes">Yes, please.</string>
+    <string name="draft_no">No, thank you.</string>
+
 </resources>

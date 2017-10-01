@@ -27,8 +27,12 @@ public class Util {
     public static final String EXTRA_USER = "user";
     public static final String EXTRA_TWEET = "tweet";
 
+    public static final String KEY_DRAFT = "draft";
+
     public static final int TWITTERCOUNT = 50;
     public static final int TWITTERCOUNT_MAX = 200;
+
+    public static final int CHARACTERCOUNT_MAX = 140;
 
     public static final int REQUESTCODE_COMPOSE = 1;
 
@@ -99,6 +103,26 @@ public class Util {
         SharedPreferences.Editor editor = settings.edit();
         editor.putLong(key, value);
         editor.commit();
+    }
+
+    public static String getStringValue(Context context, String key){
+        SharedPreferences settings = context.getSharedPreferences(SETTINGS, 0);
+        return settings.getString(key, "");
+    }
+
+    public static void setStringValue(Context context, String key, String value){
+        SharedPreferences settings = context.getSharedPreferences(SETTINGS, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
+
+    public static String getDraft(Context context){
+        return getStringValue(context, KEY_DRAFT);
+    }
+
+    public static void setDraft(Context context, String draft){
+        setStringValue(context, KEY_DRAFT, draft);
     }
 
     public static void setApiRequestTime(Context context){

@@ -1,8 +1,11 @@
 package com.mintminter.simpletwitter.activity;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -52,8 +55,12 @@ public class ComposeActivity extends AppCompatActivity {
         mClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setResult(Activity.RESULT_CANCELED);
-                finish();
+                if(mEdit.getText().length() > 0) {
+                    checkDrafting();
+                }else {
+                    setResult(Activity.RESULT_CANCELED);
+                    finish();
+                }
             }
         });
 
@@ -65,6 +72,9 @@ public class ComposeActivity extends AppCompatActivity {
 
         mCount = (TextView) findViewById(R.id.compose_count);
         mEdit = (EditText) findViewById(R.id.compose_edit);
+        String sDraft = Util.getDraft(this);
+        mEdit.setText(sDraft);
+        mCount.setText((Util.CHARACTERCOUNT_MAX - sDraft.length())+"");
         mEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -96,6 +106,43 @@ public class ComposeActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void checkDrafting(){
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(this);
+        }
+        builder.setTitle(Util.getString(this, R.string.draft_title))
+                .setMessage(Util.getString(this, R.string.draft_des))
+                .setPositiveButton(Util.getString(ComposeActivity.this, R.string.draft_yes), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Util.setDraft(ComposeActivity.this, mEdit.getText().toString());
+                        setResult(Activity.RESULT_CANCELED);
+                        finish();
+                    }
+                })
+                .setNegativeButton(Util.getString(ComposeActivity.this, R.string.draft_no), new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Util.setDraft(ComposeActivity.this, "");
+                        setResult(Activity.RESULT_CANCELED);
+                        finish();
+                    }
+                })
+                .setIcon(R.mipmap.ic_alert);
+        final AlertDialog dialog = builder.create();
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Util.getColor(ComposeActivity.this, R.color.colorPrimary));
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Util.getColor(ComposeActivity.this, R.color.colorPrimary));
+            }
+        });
+        dialog.show();
+    }
+
 
     private void post(){
         //TwitterClient twitterClient = (TwitterClient) TwitterClient.getInstance(TwitterClient.class, this);
