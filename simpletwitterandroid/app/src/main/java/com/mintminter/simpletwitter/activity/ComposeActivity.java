@@ -2,8 +2,8 @@ package com.mintminter.simpletwitter.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -18,12 +18,11 @@ import com.bumptech.glide.request.RequestOptions;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.mintminter.simpletwitter.R;
 import com.mintminter.simpletwitter.SimpleTwitterApplication;
-import com.mintminter.simpletwitter.api.TwitterClient;
 import com.mintminter.simpletwitter.common.Util;
-import com.mintminter.simpletwitter.model.Tweet;
 import com.mintminter.simpletwitter.model.User;
 
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -40,13 +39,12 @@ public class ComposeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String sUser = getIntent().getStringExtra(Util.EXTRA_USER);
-        if(TextUtils.isEmpty(sUser)){
+
+        if(!getIntent().hasExtra(Util.EXTRA_USER)){
             setResult(Activity.RESULT_CANCELED);
             finish();
         }
-
-        mUser.fromString(sUser);
+        mUser = Parcels.unwrap(getIntent().getParcelableExtra(Util.EXTRA_USER));
 
         setContentView(R.layout.activity_compose);
 

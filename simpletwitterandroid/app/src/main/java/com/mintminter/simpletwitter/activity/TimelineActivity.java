@@ -33,6 +33,7 @@ import cz.msebera.android.httpclient.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
@@ -64,7 +65,7 @@ public class TimelineActivity extends AppCompatActivity implements RequestTweets
             public void onClick(View view) {
                 Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
                 if(mUser != null) {
-                    i.putExtra(Util.EXTRA_USER, mUser.toString());
+                    i.putExtra(Util.EXTRA_USER, Parcels.wrap(mUser));
                 }
                 startActivityForResult(i,Util.REQUESTCODE_COMPOSE);
             }

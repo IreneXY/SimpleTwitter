@@ -6,6 +6,7 @@ import com.mintminter.simpletwitter.common.Util;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,7 +14,7 @@ import java.text.SimpleDateFormat;
 /**
  * Created by Irene on 9/29/17.
  */
-
+@Parcel
 public class Tweet extends Data {
     public String created_at = "";
     public long created_at_in_ms = 0;

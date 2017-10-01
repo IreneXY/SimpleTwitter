@@ -4,11 +4,11 @@ import android.text.TextUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 /**
  * Created by Irene on 9/29/17.
  */
-
 public abstract class Data {
 
     public abstract void fromJson(JSONObject json);

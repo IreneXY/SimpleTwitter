@@ -3,13 +3,14 @@ package com.mintminter.simpletwitter.model;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 import java.util.ArrayList;
 
 /**
  * Created by Irene on 9/30/17.
  */
-
+@Parcel
 public class Entities extends Data {
     public ArrayList<Media> media = new ArrayList<>();
 

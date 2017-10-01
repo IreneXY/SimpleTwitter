@@ -2,11 +2,12 @@ package com.mintminter.simpletwitter.model;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 /**
  * Created by Irene on 9/29/17.
  */
-
+@Parcel
 public class User extends Data {
     public String name = "";
     public String id_str = "";

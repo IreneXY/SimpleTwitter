@@ -2,11 +2,12 @@ package com.mintminter.simpletwitter.model;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 /**
  * Created by Irene on 9/30/17.
  */
-
+@Parcel
 public class Media extends Data {
     public String type = "";
     public boolean isPhoto = false;
