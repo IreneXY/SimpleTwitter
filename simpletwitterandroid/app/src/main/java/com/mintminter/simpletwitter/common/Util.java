@@ -24,8 +24,17 @@ public class Util {
     public static final String SETTINGS = "settings";
     public static final String SETTINGSKEY_REQUESTTIME = "requesttime";
 
+    public static final String EXTRA_USER = "user";
+    public static final String EXTRA_TWEET = "tweet";
+
     public static final int TWITTERCOUNT = 10;
     public static final int TWITTERCOUNT_MAX = 200;
+
+    public static final int REQUESTCODE_COMPOSE = 1;
+
+    public static int getColor(Context context, int colorId){
+        return context.getResources().getColor(colorId);
+    }
 
     public static String getString(Context context, int strId){
         return context.getResources().getString(strId);

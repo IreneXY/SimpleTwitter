@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.codepath.oauth.OAuthLoginActionBarActivity;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.mintminter.simpletwitter.R;
+import com.mintminter.simpletwitter.SimpleTwitterApplication;
 import com.mintminter.simpletwitter.api.TwitterClient;
 
 import org.json.JSONArray;

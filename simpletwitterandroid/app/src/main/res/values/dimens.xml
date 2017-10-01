@@ -11,6 +11,8 @@
     <dimen name="height_toolbar">56dp</dimen>
     <dimen name="height_button">36dp</dimen>
 
+    <dimen name="corner_button">18dp</dimen>
+
     <dimen name="avatar">36dp</dimen>
     <dimen name="icon">14dp</dimen>
     <dimen name="actionicon">24dp</dimen>

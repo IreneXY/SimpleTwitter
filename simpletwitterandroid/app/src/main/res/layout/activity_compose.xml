@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/div.vlist"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="com.mintminter.simpletwitter.activity.ComposeActivity">
+
+    <RelativeLayout
+        style="@style/div"
+        android:layout_height="@dimen/height_toolbar"
+        android:padding="@dimen/margin_normal">
+        <ImageView
+            android:id="@+id/compose_close"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ic_close"
+            android:tint="@color/colorPrimary" />
+        <TextView
+            android:id="@+id/compose_tweet"
+            style="@style/button"
+            android:text="@string/tweet"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
+        <TextView
+            android:id="@+id/compose_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/h2"
+            android:textColor="@color/colorPrimary"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/compose_tweet"
+            android:gravity="right|center_vertical"
+            android:layout_marginRight="@dimen/margin_normal"
+            android:text="140"/>
+
+    </RelativeLayout>
+    <TextView
+        style="@style/divider"
+        android:background="@color/grey400"/>
+
+    <LinearLayout
+        style="@style/div.hlist"
+        android:padding="@dimen/margin_normal">
+
+        <ImageView
+            android:id="@+id/compose_avatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+
+        <EditText
+            android:id="@+id/compose_edit"
+            style="@style/p"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:hint="@string/compose_hint"
+            android:lines="6"
+            android:gravity="top"
+            android:background="@drawable/bg_blank"
+            android:padding="@dimen/margin_normal"
+            android:maxLength="140"/>
+    </LinearLayout>
+
+</LinearLayout>
