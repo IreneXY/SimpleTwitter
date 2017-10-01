@@ -8,5 +8,6 @@ import com.mintminter.simpletwitter.model.Tweet;
 
 public interface RequestTweetsCallback {
     void requestMoreTweets(Tweet lastTweet);
+    void requestNewTweets(Tweet sinceTweet);
     void setLoadingUi();
 }

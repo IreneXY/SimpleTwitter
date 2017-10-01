@@ -125,13 +125,13 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         .load(imageUrl)
                         .into(mBanner);
             }
-            mRetweetCount.setText(tweet.retweet_count + "");
+            mRetweetCount.setText(Util.formatCount(tweet.retweet_count));
             if(tweet.favorited){
                 mFavIcon.setImageResource(R.mipmap.ic_heart_fill);
             }else{
                 mFavIcon.setImageResource(R.mipmap.ic_heart);
             }
-            mFavCount.setText(tweet.favorite_count + "");
+            mFavCount.setText(Util.formatCount(tweet.favorite_count));
             mRetweetArea.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

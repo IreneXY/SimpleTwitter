@@ -25,6 +25,7 @@ public class Util {
     public static final String SETTINGSKEY_REQUESTTIME = "requesttime";
 
     public static final int TWITTERCOUNT = 10;
+    public static final int TWITTERCOUNT_MAX = 200;
 
     public static String getString(Context context, int strId){
         return context.getResources().getString(strId);
@@ -104,5 +105,17 @@ public class Util {
         long currentTime = Calendar.getInstance().getTimeInMillis();
         long interval = 61*1000 - getTimeDiff(lastRequestTime, currentTime, TimeUnit.MILLISECONDS);
         return interval > 0 ? interval : 0;
+    }
+
+    public static String formatCount(long count){
+        if(count < 1000){
+            return count + "";
+        }else{
+            if(count < 1000000){
+                return count/1000 + "K";
+            }else{
+                return count/1000000 + "M";
+            }
+        }
     }
 }
