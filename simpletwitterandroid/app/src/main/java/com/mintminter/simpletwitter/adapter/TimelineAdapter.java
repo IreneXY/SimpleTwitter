@@ -3,6 +3,7 @@ package com.mintminter.simpletwitter.adapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.mintminter.simpletwitter.R;
 import com.mintminter.simpletwitter.common.Util;
+import com.mintminter.simpletwitter.interfaces.RequestTweetsCallback;
 import com.mintminter.simpletwitter.model.Tweet;
 
 import java.util.ArrayList;
@@ -25,15 +27,32 @@ import java.util.ArrayList;
 public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
     private ArrayList<Tweet> mTweets = new ArrayList<>();
+    private RequestTweetsCallback mRequestTweetsCallback;
 
-    public TimelineAdapter(Context context, ArrayList<Tweet> tweets){
+    public TimelineAdapter(Context context, ArrayList<Tweet> tweets, RequestTweetsCallback callback){
         mContext = context;
         mTweets = tweets;
+        mRequestTweetsCallback = callback;
     }
 
-    public void getNewTweets(ArrayList<Tweet> newTweets){
+    public void insertNewTweets(ArrayList<Tweet> newTweets){
         mTweets.addAll(0,newTweets);
         notifyDataSetChanged();
+        Log.i("Irene", "@insertNewTweets");
+    }
+
+    public void appendOldTweets(ArrayList<Tweet> newTweets){
+        mTweets.addAll(newTweets);
+        notifyDataSetChanged();
+        Log.i("Irene", "@appendOldTweets");
+    }
+
+    public Tweet getFirstTweet(){
+        return mTweets.get(0);
+    }
+
+    public Tweet getLastTweet(){
+        return mTweets.get(mTweets.size()-1);
     }
 
     @Override
@@ -131,6 +150,14 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 }
             });
+
+            if(position == mTweets.size() - 5){
+                mRequestTweetsCallback.requestMoreTweets(getLastTweet());
+            }
+
+            if(position == mTweets.size() - 1){
+                mRequestTweetsCallback.setLoadingUi();
+            }
         }
     }
 }

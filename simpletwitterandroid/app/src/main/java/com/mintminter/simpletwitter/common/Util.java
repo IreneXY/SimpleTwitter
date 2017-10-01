@@ -1,6 +1,7 @@
 package com.mintminter.simpletwitter.common;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.mintminter.simpletwitter.R;
 import com.mintminter.simpletwitter.model.Media;
@@ -19,6 +20,11 @@ import java.util.concurrent.TimeUnit;
 public class Util {
     public static final String PATTERN_CREATEDTIME = "EEE MMM dd HH:mm:ss Z yyyy";
     public static final String PATTERN_SHORTTIME = "MMM dd";
+
+    public static final String SETTINGS = "settings";
+    public static final String SETTINGSKEY_REQUESTTIME = "requesttime";
+
+    public static final int TWITTERCOUNT = 10;
 
     public static String getString(Context context, int strId){
         return context.getResources().getString(strId);
@@ -71,5 +77,32 @@ public class Util {
             }
         }
         return url;
+    }
+
+    public static long getLongValue(Context context, String key){
+        SharedPreferences settings = context.getSharedPreferences(SETTINGS, 0);
+        return settings.getLong(key, Calendar.getInstance().getTimeInMillis());
+    }
+
+    public static void setLongValue(Context context, String key, long value){
+        SharedPreferences settings = context.getSharedPreferences(SETTINGS, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putLong(key, value);
+        editor.commit();
+    }
+
+    public static void setApiRequestTime(Context context){
+        setLongValue(context, SETTINGSKEY_REQUESTTIME, Calendar.getInstance().getTimeInMillis());
+    }
+
+    public static long getApiRequestTime(Context context){
+        return getLongValue(context, SETTINGSKEY_REQUESTTIME);
+    }
+
+    public static long nextRequestInterval(Context context){
+        long lastRequestTime = getApiRequestTime(context);
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        long interval = 61*1000 - getTimeDiff(lastRequestTime, currentTime, TimeUnit.MILLISECONDS);
+        return interval > 0 ? interval : 0;
     }
 }
