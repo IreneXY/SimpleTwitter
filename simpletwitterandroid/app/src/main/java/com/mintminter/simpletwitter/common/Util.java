@@ -27,7 +27,7 @@ public class Util {
     public static final String EXTRA_USER = "user";
     public static final String EXTRA_TWEET = "tweet";
 
-    public static final int TWITTERCOUNT = 10;
+    public static final int TWITTERCOUNT = 50;
     public static final int TWITTERCOUNT_MAX = 200;
 
     public static final int REQUESTCODE_COMPOSE = 1;
