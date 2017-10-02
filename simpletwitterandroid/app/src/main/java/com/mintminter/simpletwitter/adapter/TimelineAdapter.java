@@ -43,13 +43,11 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void insertNewTweets(ArrayList<Tweet> newTweets){
         mTweets.addAll(0,newTweets);
         notifyDataSetChanged();
-        Log.i("Irene", "@insertNewTweets");
     }
 
     public void appendOldTweets(ArrayList<Tweet> newTweets){
         mTweets.addAll(newTweets);
         notifyDataSetChanged();
-        Log.i("Irene", "@appendOldTweets");
     }
 
     public Tweet getFirstTweet(){
@@ -134,9 +132,12 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             mContent.setText(tweet.text);
             String imageUrl = Util.getTweetImageUrl(tweet);
             if(!TextUtils.isEmpty(imageUrl)){
+                mBanner.setVisibility(View.VISIBLE);
                 Glide.with(mContext)
                         .load(imageUrl)
                         .into(mBanner);
+            }else{
+                mBanner.setVisibility(View.GONE);
             }
             mRetweetCount.setText(Util.formatCount(tweet.retweet_count));
             if(tweet.favorited){

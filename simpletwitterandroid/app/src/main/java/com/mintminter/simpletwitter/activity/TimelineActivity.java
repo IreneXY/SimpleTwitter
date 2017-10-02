@@ -97,12 +97,14 @@ public class TimelineActivity extends AppCompatActivity implements RequestTweets
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        mSwipe.setRefreshing(true);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                mSwipe.setRefreshing(true);
                                 if(mTimeLineAdapter != null){
                                     requestNewTweets(mTimeLineAdapter.getFirstTweet());
+                                }else{
+                                    mSwipe.setRefreshing(false);
                                 }
                             }
                         });
@@ -165,7 +167,6 @@ public class TimelineActivity extends AppCompatActivity implements RequestTweets
     public void requestMoreTweets(Tweet lastTweet) {
         mPreviousLastTweet = lastTweet;
         final long interval = Util.nextRequestInterval(this);
-        Log.i("Irene", "@requestMoreTweets interval = " + interval);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -178,7 +179,6 @@ public class TimelineActivity extends AppCompatActivity implements RequestTweets
     public void requestNewTweets(final Tweet sinceTweet) {
         //mUpdatingArea.setVisibility(View.VISIBLE);
         final long interval = Util.nextRequestInterval(this);
-        Log.i("Irene", "@requestNewTweets interval = " + interval);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -189,7 +189,6 @@ public class TimelineActivity extends AppCompatActivity implements RequestTweets
 
     @Override
     public void setLoadingUi() {
-        Log.i("Irene", "@setLoadingUi");
         mLoadingArea.setVisibility(View.VISIBLE);
     }
 
@@ -203,7 +202,6 @@ public class TimelineActivity extends AppCompatActivity implements RequestTweets
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.i("Irene", "requestCode = " + requestCode + " resultCode = " + resultCode);
         if (requestCode == Util.REQUESTCODE_COMPOSE) {
             if (resultCode == RESULT_OK) {
                 String sTweet = data.getStringExtra(Util.EXTRA_TWEET);
@@ -214,6 +212,7 @@ public class TimelineActivity extends AppCompatActivity implements RequestTweets
                     tweets.add(tweet);
                     if(mTimeLineAdapter != null){
                         mTimeLineAdapter.insertNewTweets(tweets);
+                        mTimelineList.scrollToPosition(0);
                     }
                 }
             }
@@ -250,6 +249,7 @@ public class TimelineActivity extends AppCompatActivity implements RequestTweets
                 mProgressDialog.dismiss();
             }
             mLoadingArea.setVisibility(View.GONE);
+            mSwipe.setRefreshing(false);
             if(mTimeLineAdapter == null) {
                 mTimeLineAdapter = new TimelineAdapter(TimelineActivity.this, mTweets, TimelineActivity.this);
                 mTimelineList.setAdapter(mTimeLineAdapter);
@@ -257,7 +257,6 @@ public class TimelineActivity extends AppCompatActivity implements RequestTweets
                 if(mPreviousLastTweet == null){
                     mTimeLineAdapter.insertNewTweets(mTweets);
                 }else{
-                    mSwipe.setRefreshing(false);
                     mTimeLineAdapter.appendOldTweets(mTweets);
                     mPreviousLastTweet = null;
                 }

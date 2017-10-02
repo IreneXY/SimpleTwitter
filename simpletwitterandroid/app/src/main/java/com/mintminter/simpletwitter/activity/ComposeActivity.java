@@ -110,6 +110,7 @@ public class ComposeActivity extends AppCompatActivity {
         mSendTweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Util.setDraft(ComposeActivity.this, "");
                 post();
             }
         });
@@ -171,8 +172,7 @@ public class ComposeActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject jsonObject){
-
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject json){
             }
         });
     }

@@ -86,9 +86,12 @@ public class DetailActivity extends AppCompatActivity {
         mPoster = (ImageView) findViewById(R.id.detail_image);
         String imageUrl = Util.getTweetImageUrl(mTweet);
         if(!TextUtils.isEmpty(imageUrl)){
+            mPoster.setVisibility(View.VISIBLE);
             Glide.with(this)
                     .load(imageUrl)
                     .into(mPoster);
+        }else{
+            mPoster.setVisibility(View.GONE);
         }
 
         mCreatedTime = (TextView) findViewById(R.id.detail_createdtime);

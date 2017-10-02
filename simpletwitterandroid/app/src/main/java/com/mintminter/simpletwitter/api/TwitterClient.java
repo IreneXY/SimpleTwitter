@@ -2,6 +2,7 @@ package com.mintminter.simpletwitter.api;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.codepath.oauth.OAuthBaseClient;
 import com.github.scribejava.apis.TwitterApi;
