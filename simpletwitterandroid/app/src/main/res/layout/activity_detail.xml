@@ -1,9 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    style="@style/div.vlist"
     tools:context="com.mintminter.simpletwitter.activity.DetailActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        style="@style/div.hlist"
+        android:layout_height="@dimen/height_toolbar"
+        android:padding="@dimen/margin_normal">
+        <ImageView
+            android:id="@+id/detail_close"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ic_back"
+            android:tint="@color/colorPrimary" />
+        <TextView
+            style="@style/h1"
+            android:text="@string/detail_title"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/margin_normal"/>
+
+    </LinearLayout>
+    <TextView
+        style="@style/divider"
+        android:background="@color/grey400"/>
+
+    <ScrollView
+        style="@style/div">
+        <LinearLayout
+            style="@style/div.vlist"
+            android:layout_margin="@dimen/margin_normal">
+
+            <RelativeLayout
+                style="@style/div">
+
+                <ImageView
+                    android:id="@+id/detail_avatar"
+                    android:layout_width="@dimen/bigavatar"
+                    android:layout_height="@dimen/bigavatar"
+                    android:layout_marginRight="@dimen/margin_normal" />
+
+                <TextView
+                    android:id="@+id/detail_name"
+                    style="@style/h1"
+                    android:layout_width="wrap_content"
+                    android:text="username"
+                    android:layout_toRightOf="@id/detail_avatar"
+                    android:layout_alignParentTop="true"/>
+
+                <ImageView
+                    android:id="@+id/detail_verified"
+                    android:layout_width="@dimen/icon"
+                    android:layout_height="@dimen/icon"
+                    android:src="@mipmap/ic_verified"
+                    android:layout_toRightOf="@id/detail_name"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="@dimen/margin_normal"/>
+
+                <TextView
+                    android:id="@+id/detail_twitter"
+                    style="@style/p"
+                    android:layout_width="wrap_content"
+                    android:text="twitter"
+                    android:layout_toRightOf="@id/detail_avatar"
+                    android:layout_below="@id/detail_name"
+                    android:layout_marginTop="@dimen/margin_mid"/>
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/detail_content"
+                style="@style/p"
+                android:layout_marginTop="@dimen/margin_normal"/>
+
+            <ImageView
+                android:id="@+id/detail_image"
+                style="@style/div"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY" />
+
+            <TextView
+                android:id="@+id/detail_createdtime"
+                style="@style/sub"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:text=""/>
+            <TextView
+                style="@style/divider"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:layout_marginBottom="@dimen/margin_normal"/>
+
+            <LinearLayout
+                style="@style/div.hlist"
+                android:layout_marginTop="@dimen/margin_mid"
+                android:weightSum="4">
+
+                <LinearLayout
+                    android:id="@+id/tweet_reply"
+                    style="@style/div.hlist"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="left|center_vertical">
+                    <ImageView
+                        android:layout_width="@dimen/actionicon"
+                        android:layout_height="@dimen/actionicon"
+                        android:src="@mipmap/ic_reply"
+                        android:tint="@color/actionIcon"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tweet_retweet"
+                    style="@style/div.hlist"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="left|center_vertical">
+                    <ImageView
+                        android:layout_width="@dimen/actionicon"
+                        android:layout_height="@dimen/actionicon"
+                        android:src="@mipmap/ic_retweet"
+                        android:tint="@color/actionIcon"/>
+                    <TextView
+                        android:id="@+id/tweet_retweetcount"
+                        style="@style/sub"
+                        android:layout_marginLeft="@dimen/margin_mid"
+                        android:textColor="@color/actionIcon"
+                        android:text="123" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tweet_fav"
+                    style="@style/div.hlist"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="left|center_vertical">
+                    <ImageView
+                        android:id="@+id/tweet_fav_icon"
+                        android:layout_width="@dimen/actionicon"
+                        android:layout_height="@dimen/actionicon"
+                        android:src="@mipmap/ic_heart"
+                        android:tint="@color/actionIcon"/>
+                    <TextView
+                        android:id="@+id/tweet_favcount"
+                        style="@style/sub"
+                        android:layout_marginLeft="@dimen/margin_mid"
+                        android:textColor="@color/actionIcon"
+                        android:text="count" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tweet_message"
+                    style="@style/div.hlist"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center">
+                    <ImageView
+                        android:layout_width="@dimen/actionicon"
+                        android:layout_height="@dimen/actionicon"
+                        android:src="@mipmap/ic_message"
+                        android:tint="@color/actionIcon"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+
+</LinearLayout>

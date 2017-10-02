@@ -194,6 +194,14 @@ public class TimelineActivity extends AppCompatActivity implements RequestTweets
     }
 
     @Override
+    public void openDetail(Tweet tweet) {
+        Intent i = new Intent(this, DetailActivity.class);
+        i.putExtra(Util.EXTRA_TWEET, Parcels.wrap(tweet));
+        i.putExtra(Util.EXTRA_USER, Parcels.wrap(mUser));
+        startActivity(i);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.i("Irene", "requestCode = " + requestCode + " resultCode = " + resultCode);
         if (requestCode == Util.REQUESTCODE_COMPOSE) {

@@ -1,6 +1,7 @@
 package com.mintminter.simpletwitter.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -14,9 +15,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.mintminter.simpletwitter.R;
+import com.mintminter.simpletwitter.activity.DetailActivity;
 import com.mintminter.simpletwitter.common.Util;
 import com.mintminter.simpletwitter.interfaces.RequestTweetsCallback;
 import com.mintminter.simpletwitter.model.Tweet;
+
+import org.parceler.Parcel;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
@@ -85,9 +90,11 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         private ImageView mFavIcon;
         private TextView mFavCount;
         private LinearLayout mMessageArea;
+        private View mItemView;
 
         public TweetViewHolder(View itemView) {
             super(itemView);
+            mItemView = itemView;
             mAvatar = (ImageView) itemView.findViewById(R.id.tweet_avatar);
             mUsername = (TextView) itemView.findViewById(R.id.tweet_username);
             mVerified = (ImageView) itemView.findViewById(R.id.tweet_verified);
@@ -105,7 +112,13 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
 
         public void bind(int position){
-            Tweet tweet = mTweets.get(position);
+            final Tweet tweet = mTweets.get(position);
+            mItemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mRequestTweetsCallback.openDetail(tweet);
+                }
+            });
             Glide.with(mContext)
                     .load(tweet.user.profile_image_url)
                     .apply(RequestOptions.circleCropTransform())

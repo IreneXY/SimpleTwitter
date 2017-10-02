@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 public class Util {
     public static final String PATTERN_CREATEDTIME = "EEE MMM dd HH:mm:ss Z yyyy";
     public static final String PATTERN_SHORTTIME = "MMM dd";
+    public static final String PATTERN_DETAILTIME = "HH:mm:ss MMM dd, yyyy";
 
     public static final String SETTINGS = "settings";
     public static final String SETTINGSKEY_REQUESTTIME = "requesttime";
@@ -29,7 +30,7 @@ public class Util {
 
     public static final String KEY_DRAFT = "draft";
 
-    public static final int TWITTERCOUNT = 50;
+    public static final int TWITTERCOUNT = 200;
     public static final int TWITTERCOUNT_MAX = 200;
 
     public static final int CHARACTERCOUNT_MAX = 140;

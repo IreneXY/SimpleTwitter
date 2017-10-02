@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +21,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.mintminter.simpletwitter.R;
 import com.mintminter.simpletwitter.SimpleTwitterApplication;
 import com.mintminter.simpletwitter.common.Util;
+import com.mintminter.simpletwitter.model.Tweet;
 import com.mintminter.simpletwitter.model.User;
 
 import org.json.JSONObject;
@@ -34,10 +34,11 @@ public class ComposeActivity extends AppCompatActivity {
     private ImageView mClose;
     private ImageView mAvatar;
     private TextView mCount;
-    private TextView mTweet;
+    private TextView mSendTweet;
     private EditText mEdit;
 
     private User mUser = new User();
+    private Tweet mTweet = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,10 @@ public class ComposeActivity extends AppCompatActivity {
             finish();
         }
         mUser = Parcels.unwrap(getIntent().getParcelableExtra(Util.EXTRA_USER));
+
+        if(getIntent().hasExtra(Util.EXTRA_TWEET)){
+            mTweet = Parcels.unwrap(getIntent().getParcelableExtra(Util.EXTRA_TWEET));
+        }
 
         setContentView(R.layout.activity_compose);
 
@@ -73,6 +78,9 @@ public class ComposeActivity extends AppCompatActivity {
         mCount = (TextView) findViewById(R.id.compose_count);
         mEdit = (EditText) findViewById(R.id.compose_edit);
         String sDraft = Util.getDraft(this);
+        if(mTweet != null){
+            sDraft = Util.genUserTwitter(mTweet.user.screen_name) + " " + sDraft;
+        }
         mEdit.setText(sDraft);
         mCount.setText((Util.CHARACTERCOUNT_MAX - sDraft.length())+"");
         mEdit.addTextChangedListener(new TextWatcher() {
@@ -98,8 +106,8 @@ public class ComposeActivity extends AppCompatActivity {
             }
         });
 
-        mTweet = (TextView) findViewById(R.id.compose_tweet);
-        mTweet.setOnClickListener(new View.OnClickListener() {
+        mSendTweet = (TextView) findViewById(R.id.compose_tweet);
+        mSendTweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 post();
@@ -146,8 +154,12 @@ public class ComposeActivity extends AppCompatActivity {
 
     private void post(){
         //TwitterClient twitterClient = (TwitterClient) TwitterClient.getInstance(TwitterClient.class, this);
-
-        SimpleTwitterApplication.getRestClient().postTweet(mEdit.getText().toString(), new JsonHttpResponseHandler(){
+        String sContent = mEdit.getText().toString();
+        long replyId = 0;
+        if(mTweet != null){
+            replyId = mTweet.id;
+        }
+        SimpleTwitterApplication.getRestClient().postTweet(sContent, replyId, new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, final JSONObject json){
                 runOnUiThread(new Runnable() {
@@ -160,7 +172,7 @@ public class ComposeActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject jsonObject){
-                Log.i("Irene", "@onFailure");
+
             }
         });
     }

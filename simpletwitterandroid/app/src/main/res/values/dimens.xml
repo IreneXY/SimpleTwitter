@@ -14,6 +14,7 @@
     <dimen name="corner_button">18dp</dimen>
 
     <dimen name="avatar">36dp</dimen>
+    <dimen name="bigavatar">48dp</dimen>
     <dimen name="icon">14dp</dimen>
     <dimen name="actionicon">24dp</dimen>
 

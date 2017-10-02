@@ -10,4 +10,5 @@ public interface RequestTweetsCallback {
     void requestMoreTweets(Tweet lastTweet);
     void requestNewTweets(Tweet sinceTweet);
     void setLoadingUi();
+    void openDetail(Tweet tweet);
 }
