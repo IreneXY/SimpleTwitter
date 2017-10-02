@@ -95,4 +95,16 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/main_write"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:src="@mipmap/ic_newtwitter"
+        app:backgroundTint="@color/colorPrimary"
+        app:elevation="4dp"  />
+
 </RelativeLayout>

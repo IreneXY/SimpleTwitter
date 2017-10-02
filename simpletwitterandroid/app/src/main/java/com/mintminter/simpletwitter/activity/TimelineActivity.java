@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -43,6 +44,7 @@ public class TimelineActivity extends AppCompatActivity implements RequestTweets
     private Toolbar mToolbar;
     private ImageView mUserAvtar;
     private ImageView mNewTweet;
+    private FloatingActionButton mWrite;
     private SwipeRefreshLayout mSwipe;
     private RecyclerView mTimelineList;
     private TimelineAdapter mTimeLineAdapter = null;
@@ -60,7 +62,19 @@ public class TimelineActivity extends AppCompatActivity implements RequestTweets
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         mUserAvtar = (ImageView) findViewById(R.id.main_toolbar_avatar);
         mNewTweet = (ImageView) findViewById(R.id.main_toolbar_write);
+        mNewTweet.setVisibility(View.GONE);
         mNewTweet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
+                if(mUser != null) {
+                    i.putExtra(Util.EXTRA_USER, Parcels.wrap(mUser));
+                }
+                startActivityForResult(i,Util.REQUESTCODE_COMPOSE);
+            }
+        });
+        mWrite = (FloatingActionButton) findViewById(R.id.main_write);
+        mWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
