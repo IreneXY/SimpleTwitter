@@ -2,9 +2,12 @@ package com.mintminter.simpletwitter.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -16,9 +19,11 @@ import com.bumptech.glide.request.RequestOptions;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.mintminter.simpletwitter.R;
 import com.mintminter.simpletwitter.SimpleTwitterApplication;
+import com.mintminter.simpletwitter.adapter.FragmentAdapter;
 import com.mintminter.simpletwitter.common.Util;
 import com.mintminter.simpletwitter.fragment.TimelineFragment;
 import com.mintminter.simpletwitter.model.User;
+import com.mintminter.simpletwitter.widget.NoScrollingViewPager;
 
 import org.json.JSONObject;
 import org.parceler.Parcels;
@@ -30,7 +35,8 @@ public class HomeActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private ImageView mUserAvtar;
     private ImageView mNewTweet;
-    private RelativeLayout mFragmentContainer;
+    private TabLayout mTabLayout;
+    private NoScrollingViewPager mViewPager;
 
     private User mUser;
 
@@ -54,18 +60,28 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        mFragmentContainer = (RelativeLayout) findViewById(R.id.main_container);
+        mTabLayout = (TabLayout) findViewById(R.id.main_tabs);
+        mViewPager = (NoScrollingViewPager) findViewById(R.id.main_viewpager);
+        mViewPager.setScrollingEnabled(false);
 
         getUser();
 
     }
 
-    private void addTimelineFragment(){
-        FragmentManager fragMan = getSupportFragmentManager();
-        FragmentTransaction fragTransaction = fragMan.beginTransaction();
-        Fragment timelineFragment = TimelineFragment.newInstance(mUser);
-        fragTransaction.add(mFragmentContainer.getId(), timelineFragment , TimelineFragment.TAG);
-        fragTransaction.commitAllowingStateLoss();
+//    private void addTimelineFragment(){
+//        FragmentManager fragMan = getSupportFragmentManager();
+//        FragmentTransaction fragTransaction = fragMan.beginTransaction();
+//        Fragment timelineFragment = TimelineFragment.newInstance(mUser);
+//        fragTransaction.add(mFragmentContainer.getId(), timelineFragment , TimelineFragment.TAG);
+//        fragTransaction.commitAllowingStateLoss();
+//    }
+
+    private void setViewPager(){
+        mViewPager.setAdapter(new FragmentAdapter(this, getSupportFragmentManager(), mUser));
+        mTabLayout.setupWithViewPager(mViewPager);
+        for(int i = 0; i < FragmentAdapter.PAGE_COUNT; i++){
+            mTabLayout.getTabAt(i).setIcon(FragmentAdapter.PAGEICONS[i]);
+        }
     }
 
     private JsonHttpResponseHandler mCredentialHandler = new JsonHttpResponseHandler(){
@@ -80,7 +96,7 @@ public class HomeActivity extends AppCompatActivity {
                             .load(mUser.profile_image_url)
                             .apply(RequestOptions.circleCropTransform())
                             .into(mUserAvtar);
-                    addTimelineFragment();
+                    setViewPager();
                 }
             });
         }

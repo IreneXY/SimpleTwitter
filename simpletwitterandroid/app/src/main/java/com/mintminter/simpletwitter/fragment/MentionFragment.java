@@ -1,6 +1,5 @@
 package com.mintminter.simpletwitter.fragment;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -11,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +18,6 @@ import android.widget.LinearLayout;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.mintminter.simpletwitter.R;
 import com.mintminter.simpletwitter.SimpleTwitterApplication;
-import com.mintminter.simpletwitter.activity.ComposeActivity;
 import com.mintminter.simpletwitter.activity.DetailActivity;
 import com.mintminter.simpletwitter.adapter.TimelineAdapter;
 import com.mintminter.simpletwitter.common.Util;
@@ -41,13 +38,11 @@ import cz.msebera.android.httpclient.Header;
  * Created by Irene on 10/5/17.
  */
 
-public class TimelineFragment extends Fragment implements RequestTweetsCallback {
-
+public class MentionFragment extends Fragment implements RequestTweetsCallback {
     public static final String TAG = "TimelineFragment";
 
     private View mFragmentView;
     private ProgressDialog mProgressDialog;
-    private FloatingActionButton mWrite;
     private SwipeRefreshLayout mSwipe;
     private RecyclerView mTimelineList;
     private TimelineAdapter mTimeLineAdapter = null;
@@ -56,8 +51,8 @@ public class TimelineFragment extends Fragment implements RequestTweetsCallback 
     private Tweet mPreviousLastTweet;
     private User mUser;
 
-    public static TimelineFragment newInstance(User user){
-        TimelineFragment fragment = new TimelineFragment();
+    public static MentionFragment newInstance(User user){
+        MentionFragment fragment = new MentionFragment();
         Bundle args = new Bundle();
         args.putParcelable(Util.EXTRA_USER, Parcels.wrap(user));
         fragment.setArguments(args);
@@ -73,23 +68,12 @@ public class TimelineFragment extends Fragment implements RequestTweetsCallback 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mFragmentView = inflater.inflate(R.layout.fragment_timeline, container, false);
-        mWrite = (FloatingActionButton) mFragmentView.findViewById(R.id.main_write);
-        mWrite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getActivity(), ComposeActivity.class);
-                if(mUser != null) {
-                    i.putExtra(Util.EXTRA_USER, Parcels.wrap(mUser));
-                }
-                startActivityForResult(i,Util.REQUESTCODE_COMPOSE);
-            }
-        });
+        mFragmentView = inflater.inflate(R.layout.fragment_mention, container, false);
 
-        mLoadingArea = (LinearLayout) mFragmentView.findViewById(R.id.main_loading);
+        mLoadingArea = (LinearLayout) mFragmentView.findViewById(R.id.mention_loading);
         mLoadingArea.setVisibility(View.GONE);
-        mSwipe = (SwipeRefreshLayout) mFragmentView.findViewById(R.id.main_swiperefresh);
-        mTimelineList = (RecyclerView) mFragmentView.findViewById(R.id.main_timeline);
+        mSwipe = (SwipeRefreshLayout) mFragmentView.findViewById(R.id.mention_swiperefresh);
+        mTimelineList = (RecyclerView) mFragmentView.findViewById(R.id.mention_timeline);
         mTimelineList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mSwipe.setOnRefreshListener(
@@ -111,42 +95,41 @@ public class TimelineFragment extends Fragment implements RequestTweetsCallback 
                 }
         );
 
-
         mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setMessage(Util.getString(getActivity(), R.string.loading));
         mProgressDialog.setCancelable(false);
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();
-        getTimeline(Util.TWITTERCOUNT, 0, 0);
+        getMention(Util.TWITTERCOUNT, 0, 0);
         return mFragmentView;
     }
 
-    private JsonHttpResponseHandler mTimelineHandler = new JsonHttpResponseHandler(){
+    private JsonHttpResponseHandler mMentionHandler = new JsonHttpResponseHandler(){
         @Override
         public void onSuccess(int statusCode, Header[] headers, final JSONArray json){
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    new GetTweetsTask(json).execute();
+                    new GetMentionTask(json).execute();
                 }
             });
         }
     };
 
-    private void getTimeline(int count, long since_id, long max_id){
+    private void getMention(int count, long since_id, long max_id){
         //TwitterClient twitterClient = (TwitterClient) TwitterClient.getInstance(TwitterClient.class, this);
-        SimpleTwitterApplication.getRestClient().getHomeTimeline(count, since_id, max_id, mTimelineHandler);
+        SimpleTwitterApplication.getRestClient().getMention(count, since_id, max_id, mMentionHandler);
         Util.setApiRequestTime(getActivity());
     }
 
     @Override
     public void requestMoreTweets(Tweet lastTweet) {
         mPreviousLastTweet = lastTweet;
-        final long interval = Util.nextRequestInterval(getActivity(), Util.WINDOW_TIMELINE);
+        final long interval = Util.nextRequestInterval(getActivity(), Util.WINDOW_MENTION);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                getTimeline(Util.TWITTERCOUNT, 0, mPreviousLastTweet.id);
+                getMention(Util.TWITTERCOUNT, 0, mPreviousLastTweet.id);
             }
         }, interval);
     }
@@ -154,11 +137,11 @@ public class TimelineFragment extends Fragment implements RequestTweetsCallback 
     @Override
     public void requestNewTweets(final Tweet sinceTweet) {
         //mUpdatingArea.setVisibility(View.VISIBLE);
-        final long interval = Util.nextRequestInterval(getActivity(), Util.WINDOW_TIMELINE);
+        final long interval = Util.nextRequestInterval(getActivity(), Util.WINDOW_MENTION);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                getTimeline(Util.TWITTERCOUNT, sinceTweet.id, 0);
+                getMention(Util.TWITTERCOUNT, sinceTweet.id, 0);
             }
         }, interval);
     }
@@ -176,30 +159,11 @@ public class TimelineFragment extends Fragment implements RequestTweetsCallback 
         startActivity(i);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Util.REQUESTCODE_COMPOSE) {
-            if (resultCode == Activity.RESULT_OK) {
-                String sTweet = data.getStringExtra(Util.EXTRA_TWEET);
-                if(!TextUtils.isEmpty(sTweet)){
-                    Tweet tweet = new Tweet();
-                    tweet.fromString(sTweet);
-                    ArrayList<Tweet> tweets = new ArrayList<>();
-                    tweets.add(tweet);
-                    if(mTimeLineAdapter != null){
-                        mTimeLineAdapter.insertNewTweets(tweets);
-                        mTimelineList.scrollToPosition(0);
-                    }
-                }
-            }
-        }
-    }
-
-    class GetTweetsTask extends AsyncTask<Void, Void, Boolean> {
+    class GetMentionTask extends AsyncTask<Void, Void, Boolean> {
         private JSONArray mTweetsJsonArray;
         private ArrayList<Tweet> mTweets = new ArrayList<>();
 
-        public GetTweetsTask(JSONArray tweetsJsonArray){
+        public GetMentionTask(JSONArray tweetsJsonArray){
             mTweetsJsonArray = tweetsJsonArray;
         }
 
@@ -227,7 +191,7 @@ public class TimelineFragment extends Fragment implements RequestTweetsCallback 
             mLoadingArea.setVisibility(View.GONE);
             mSwipe.setRefreshing(false);
             if(mTimeLineAdapter == null) {
-                mTimeLineAdapter = new TimelineAdapter(getActivity(), mTweets, TimelineFragment.this);
+                mTimeLineAdapter = new TimelineAdapter(getActivity(), mTweets, MentionFragment.this);
                 mTimelineList.setAdapter(mTimeLineAdapter);
             }else{
                 if(mPreviousLastTweet == null){

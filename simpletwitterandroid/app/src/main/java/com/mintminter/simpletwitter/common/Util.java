@@ -37,6 +37,9 @@ public class Util {
 
     public static final int REQUESTCODE_COMPOSE = 1;
 
+    public static final int WINDOW_TIMELINE = 60;
+    public static final int WINDOW_MENTION = 12;
+
     public static int getColor(Context context, int colorId){
         return context.getResources().getColor(colorId);
     }
@@ -134,10 +137,10 @@ public class Util {
         return getLongValue(context, SETTINGSKEY_REQUESTTIME);
     }
 
-    public static long nextRequestInterval(Context context){
+    public static long nextRequestInterval(Context context, int windowSeconds){
         long lastRequestTime = getApiRequestTime(context);
         long currentTime = Calendar.getInstance().getTimeInMillis();
-        long interval = 61*1000 - getTimeDiff(lastRequestTime, currentTime, TimeUnit.MILLISECONDS);
+        long interval = (windowSeconds+1)*1000 - getTimeDiff(lastRequestTime, currentTime, TimeUnit.MILLISECONDS);
         return interval > 0 ? interval : 0;
     }
 

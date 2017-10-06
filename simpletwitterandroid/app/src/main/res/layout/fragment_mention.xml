@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/mention_loading"
+        style="@style/div.hlist"
+        android:layout_height="40dp"
+        android:background="@color/black_semi_99"
+        android:layout_alignParentBottom="true"
+        android:gravity="center">
+        <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerInParent="true"/>
+        <TextView
+            style="@style/sub"
+            android:textColor="@color/colorAccent"
+            android:text="@string/loading"
+            android:layout_marginLeft="@dimen/margin_mid"/>
+
+    </LinearLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/mention_swiperefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/mention_loading">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/mention_timeline"
+            style="@style/div"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</RelativeLayout>
