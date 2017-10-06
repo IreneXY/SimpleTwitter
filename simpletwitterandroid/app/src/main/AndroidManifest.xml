@@ -33,7 +33,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.TimelineActivity"
+            android:name=".activity.HomeActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".activity.ComposeActivity" />
         <activity android:name=".activity.DetailActivity"></activity>

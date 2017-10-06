@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.mintminter.simpletwitter.activity.HomeActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/main_toolbar"
+        style="@style/div"
+        android:layout_height="@dimen/height_toolbar"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/bg_toolbar_main">
+        <RelativeLayout
+            style="@style/div"
+            android:layout_height="match_parent"
+            android:paddingRight="20dp">
+            <ImageView
+                android:id="@+id/main_toolbar_avatar"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:src="@mipmap/ic_launcher"
+                android:layout_marginRight="@dimen/margin_normal"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"/>
+            <TextView
+                style="@style/h1"
+                android:layout_width="wrap_content"
+                android:text="@string/home"
+                android:textColor="@color/white"
+                android:layout_toRightOf="@id/main_toolbar_avatar"
+                android:layout_centerVertical="true"/>
+            <ImageView
+                android:id="@+id/main_toolbar_write"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@mipmap/ic_write"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" />
+
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:id="@+id/main_container"
+        style="@style/div"
+        android:layout_height="match_parent"
+        android:layout_below="@id/main_toolbar">
+
+    </RelativeLayout>
+
+    <!--<android.support.design.widget.TabLayout-->
+        <!--android:id="@+id/main_tabs"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/main_toolbar"-->
+        <!--app:tabMode="fixed" />-->
+
+    <!--<com.mintminter.simpletwitter.widget.NoScrollingViewPager-->
+        <!--android:id="@+id/container"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_below="@id/main_tabs"-->
+        <!--app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
+
+</RelativeLayout>

@@ -1,35 +1,33 @@
-package com.mintminter.simpletwitter.activity;
+package com.mintminter.simpletwitter.fragment;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.mintminter.simpletwitter.R;
 import com.mintminter.simpletwitter.SimpleTwitterApplication;
+import com.mintminter.simpletwitter.activity.ComposeActivity;
+import com.mintminter.simpletwitter.activity.DetailActivity;
+import com.mintminter.simpletwitter.activity.HomeActivity;
 import com.mintminter.simpletwitter.adapter.TimelineAdapter;
-import com.mintminter.simpletwitter.api.TwitterClient;
 import com.mintminter.simpletwitter.common.Util;
 import com.mintminter.simpletwitter.interfaces.RequestTweetsCallback;
 import com.mintminter.simpletwitter.model.Tweet;
 import com.mintminter.simpletwitter.model.User;
-
-import cz.msebera.android.httpclient.Header;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,46 +36,50 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
-public class TimelineActivity extends AppCompatActivity implements RequestTweetsCallback{
+import cz.msebera.android.httpclient.Header;
 
+/**
+ * Created by Irene on 10/5/17.
+ */
+
+public class TimelineFragment extends Fragment implements RequestTweetsCallback {
+
+    public static final String TAG = "TimelineFragment";
+
+    private View mFragmentView;
     private ProgressDialog mProgressDialog;
-    private Toolbar mToolbar;
-    private ImageView mUserAvtar;
-    private ImageView mNewTweet;
     private FloatingActionButton mWrite;
     private SwipeRefreshLayout mSwipe;
     private RecyclerView mTimelineList;
     private TimelineAdapter mTimeLineAdapter = null;
     private LinearLayout mLoadingArea;
-    private LinearLayout mUpdatingArea;
-    private Tweet mPreviousLastTweet;
 
+    private Tweet mPreviousLastTweet;
     private User mUser;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_timeline);
+    public static TimelineFragment newInstance(User user){
+        TimelineFragment fragment = new TimelineFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(Util.EXTRA_USER, Parcels.wrap(user));
+        fragment.setArguments(args);
+        return fragment;
+    }
 
-        mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        mUserAvtar = (ImageView) findViewById(R.id.main_toolbar_avatar);
-        mNewTweet = (ImageView) findViewById(R.id.main_toolbar_write);
-        mNewTweet.setVisibility(View.GONE);
-        mNewTweet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
-                if(mUser != null) {
-                    i.putExtra(Util.EXTRA_USER, Parcels.wrap(mUser));
-                }
-                startActivityForResult(i,Util.REQUESTCODE_COMPOSE);
-            }
-        });
-        mWrite = (FloatingActionButton) findViewById(R.id.main_write);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mUser = Parcels.unwrap(getArguments().getParcelable(Util.EXTRA_USER));
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        mFragmentView = inflater.inflate(R.layout.fragment_timeline, container, false);
+        mWrite = (FloatingActionButton) mFragmentView.findViewById(R.id.main_write);
         mWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
+                Intent i = new Intent(getActivity(), ComposeActivity.class);
                 if(mUser != null) {
                     i.putExtra(Util.EXTRA_USER, Parcels.wrap(mUser));
                 }
@@ -85,19 +87,17 @@ public class TimelineActivity extends AppCompatActivity implements RequestTweets
             }
         });
 
-        mLoadingArea = (LinearLayout) findViewById(R.id.main_loading);
+        mLoadingArea = (LinearLayout) mFragmentView.findViewById(R.id.main_loading);
         mLoadingArea.setVisibility(View.GONE);
-        mUpdatingArea = (LinearLayout) findViewById(R.id.main_updating);
-        mUpdatingArea.setVisibility(View.GONE);
-        mSwipe = (SwipeRefreshLayout) findViewById(R.id.main_swiperefresh);
-        mTimelineList = (RecyclerView) findViewById(R.id.main_timeline);
-        mTimelineList.setLayoutManager(new LinearLayoutManager(this));
+        mSwipe = (SwipeRefreshLayout) mFragmentView.findViewById(R.id.main_swiperefresh);
+        mTimelineList = (RecyclerView) mFragmentView.findViewById(R.id.main_timeline);
+        mTimelineList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mSwipe.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        runOnUiThread(new Runnable() {
+                        getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 mSwipe.setRefreshing(true);
@@ -113,20 +113,19 @@ public class TimelineActivity extends AppCompatActivity implements RequestTweets
         );
 
 
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setMessage(Util.getString(this, R.string.loading));
+        mProgressDialog = new ProgressDialog(getActivity());
+        mProgressDialog.setMessage(Util.getString(getActivity(), R.string.loading));
         mProgressDialog.setCancelable(false);
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();
-
-        getUser();
         getTimeline(Util.TWITTERCOUNT, 0, 0);
+        return mFragmentView;
     }
 
     private JsonHttpResponseHandler mTimelineHandler = new JsonHttpResponseHandler(){
         @Override
         public void onSuccess(int statusCode, Header[] headers, final JSONArray json){
-            runOnUiThread(new Runnable() {
+            getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     new GetTweetsTask(json).execute();
@@ -135,38 +134,16 @@ public class TimelineActivity extends AppCompatActivity implements RequestTweets
         }
     };
 
-    private JsonHttpResponseHandler mCredentialHandler = new JsonHttpResponseHandler(){
-        @Override
-        public void onSuccess(int statusCode, Header[] headers, final JSONObject json){
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mUser = new User();
-                    mUser.fromJson(json);
-                    Glide.with(TimelineActivity.this)
-                            .load(mUser.profile_image_url)
-                            .apply(RequestOptions.circleCropTransform())
-                            .into(mUserAvtar);
-                }
-            });
-        }
-    };
-
     private void getTimeline(int count, long since_id, long max_id){
         //TwitterClient twitterClient = (TwitterClient) TwitterClient.getInstance(TwitterClient.class, this);
         SimpleTwitterApplication.getRestClient().getHomeTimeline(count, since_id, max_id, mTimelineHandler);
-        Util.setApiRequestTime(this);
-    }
-
-    private void getUser(){
-        //TwitterClient twitterClient = (TwitterClient) TwitterClient.getInstance(TwitterClient.class, this);
-        SimpleTwitterApplication.getRestClient().getCredentials(mCredentialHandler);
+        Util.setApiRequestTime(getActivity());
     }
 
     @Override
     public void requestMoreTweets(Tweet lastTweet) {
         mPreviousLastTweet = lastTweet;
-        final long interval = Util.nextRequestInterval(this);
+        final long interval = Util.nextRequestInterval(getActivity());
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -178,7 +155,7 @@ public class TimelineActivity extends AppCompatActivity implements RequestTweets
     @Override
     public void requestNewTweets(final Tweet sinceTweet) {
         //mUpdatingArea.setVisibility(View.VISIBLE);
-        final long interval = Util.nextRequestInterval(this);
+        final long interval = Util.nextRequestInterval(getActivity());
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -194,16 +171,16 @@ public class TimelineActivity extends AppCompatActivity implements RequestTweets
 
     @Override
     public void openDetail(Tweet tweet) {
-        Intent i = new Intent(this, DetailActivity.class);
+        Intent i = new Intent(getActivity(), DetailActivity.class);
         i.putExtra(Util.EXTRA_TWEET, Parcels.wrap(tweet));
         i.putExtra(Util.EXTRA_USER, Parcels.wrap(mUser));
         startActivity(i);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Util.REQUESTCODE_COMPOSE) {
-            if (resultCode == RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK) {
                 String sTweet = data.getStringExtra(Util.EXTRA_TWEET);
                 if(!TextUtils.isEmpty(sTweet)){
                     Tweet tweet = new Tweet();
@@ -219,7 +196,7 @@ public class TimelineActivity extends AppCompatActivity implements RequestTweets
         }
     }
 
-    class GetTweetsTask extends AsyncTask<Void, Void, Boolean>{
+    class GetTweetsTask extends AsyncTask<Void, Void, Boolean> {
         private JSONArray mTweetsJsonArray;
         private ArrayList<Tweet> mTweets = new ArrayList<>();
 
@@ -251,7 +228,7 @@ public class TimelineActivity extends AppCompatActivity implements RequestTweets
             mLoadingArea.setVisibility(View.GONE);
             mSwipe.setRefreshing(false);
             if(mTimeLineAdapter == null) {
-                mTimeLineAdapter = new TimelineAdapter(TimelineActivity.this, mTweets, TimelineActivity.this);
+                mTimeLineAdapter = new TimelineAdapter(getActivity(), mTweets, TimelineFragment.this);
                 mTimelineList.setAdapter(mTimeLineAdapter);
             }else{
                 if(mPreviousLastTweet == null){
@@ -263,5 +240,4 @@ public class TimelineActivity extends AppCompatActivity implements RequestTweets
             }
         }
     }
-
 }

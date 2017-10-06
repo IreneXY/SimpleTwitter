@@ -2,21 +2,12 @@ package com.mintminter.simpletwitter.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.codepath.oauth.OAuthLoginActionBarActivity;
-import com.loopj.android.http.JsonHttpResponseHandler;
 import com.mintminter.simpletwitter.R;
-import com.mintminter.simpletwitter.SimpleTwitterApplication;
 import com.mintminter.simpletwitter.api.TwitterClient;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import cz.msebera.android.httpclient.Header;
 
 public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 
@@ -37,7 +28,7 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 
     @Override
     public void onLoginSuccess() {
-        Intent i = new Intent(this, TimelineActivity.class);
+        Intent i = new Intent(this, HomeActivity.class);
         startActivity(i);
     }
 
