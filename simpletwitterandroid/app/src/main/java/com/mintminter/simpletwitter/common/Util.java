@@ -2,6 +2,7 @@ package com.mintminter.simpletwitter.common;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.format.DateUtils;
 
 import com.mintminter.simpletwitter.R;
 import com.mintminter.simpletwitter.model.Media;
@@ -20,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class Util {
     public static final String PATTERN_CREATEDTIME = "EEE MMM dd HH:mm:ss Z yyyy";
     public static final String PATTERN_SHORTTIME = "MMM dd";
+    public static final String PATTERN_SHORTTIME_YEAR = "MMM dd, yyyy";
     public static final String PATTERN_DETAILTIME = "HH:mm:ss MMM dd, yyyy";
 
     public static final String SETTINGS = "settings";
@@ -75,7 +77,14 @@ public class Util {
                 if(diff < 24){
                     return diff + "h";
                 }else{
-                    return new SimpleDateFormat(Util.PATTERN_SHORTTIME).format(new Date(createdTime)).toString();
+                    Calendar create = Calendar.getInstance();
+                    create.setTimeInMillis(createdTime);
+                    Calendar current = Calendar.getInstance();
+                    if(create.get(Calendar.YEAR) == current.get(Calendar.YEAR)) {
+                        return new SimpleDateFormat(Util.PATTERN_SHORTTIME).format(new Date(createdTime)).toString();
+                    }else{
+                        return new SimpleDateFormat(Util.PATTERN_SHORTTIME_YEAR).format(new Date(createdTime)).toString();
+                    }
                 }
             }
         }
