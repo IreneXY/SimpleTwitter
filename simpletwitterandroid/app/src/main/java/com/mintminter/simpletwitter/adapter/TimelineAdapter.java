@@ -16,9 +16,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.mintminter.simpletwitter.R;
 import com.mintminter.simpletwitter.activity.DetailActivity;
+import com.mintminter.simpletwitter.activity.ProfileActivity;
 import com.mintminter.simpletwitter.common.Util;
 import com.mintminter.simpletwitter.interfaces.RequestTweetsCallback;
 import com.mintminter.simpletwitter.model.Tweet;
+import com.mintminter.simpletwitter.model.User;
 
 import org.parceler.Parcel;
 import org.parceler.Parcels;
@@ -33,11 +35,13 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Context mContext;
     private ArrayList<Tweet> mTweets = new ArrayList<>();
     private RequestTweetsCallback mRequestTweetsCallback;
+    private User mCurrentUser;
 
-    public TimelineAdapter(Context context, ArrayList<Tweet> tweets, RequestTweetsCallback callback){
+    public TimelineAdapter(Context context, ArrayList<Tweet> tweets, User currentUser, RequestTweetsCallback callback){
         mContext = context;
         mTweets = tweets;
         mRequestTweetsCallback = callback;
+        mCurrentUser = currentUser;
     }
 
     public void insertNewTweets(ArrayList<Tweet> newTweets){
@@ -88,6 +92,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         private ImageView mFavIcon;
         private TextView mFavCount;
         private LinearLayout mMessageArea;
+        private ImageView mMessageIcon;
         private View mItemView;
 
         public TweetViewHolder(View itemView) {
@@ -107,6 +112,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             mFavIcon = (ImageView) itemView.findViewById(R.id.tweet_fav_icon);
             mFavCount = (TextView) itemView.findViewById(R.id.tweet_favcount);
             mMessageArea = (LinearLayout) itemView.findViewById(R.id.tweet_message);
+            mMessageIcon = (ImageView) itemView.findViewById(R.id.tweet_message_icon);
         }
 
         public void bind(int position){
@@ -121,6 +127,14 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     .load(tweet.user.profile_image_url)
                     .apply(RequestOptions.circleCropTransform())
                     .into(mAvatar);
+            mAvatar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(mContext, ProfileActivity.class);
+                    i.putExtra(Util.EXTRA_USER, Parcels.wrap(tweet.user));
+                    mContext.startActivity(i);
+                }
+            });
             mUsername.setText(tweet.user.name);
             if(tweet.user.verified){
                 mVerified.setVisibility(View.VISIBLE);
@@ -164,6 +178,12 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 }
             });
+
+            if(mCurrentUser.id == tweet.user.id){
+                mMessageIcon.setImageResource(R.mipmap.ic_analytics);
+            }else{
+                mMessageIcon.setImageResource(R.mipmap.ic_message);
+            }
 
             if(position == mTweets.size() - 5){
                 mRequestTweetsCallback.requestMoreTweets(getLastTweet());

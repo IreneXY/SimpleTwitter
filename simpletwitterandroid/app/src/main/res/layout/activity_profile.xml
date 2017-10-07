@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        style="@style/div.hlist"
+        android:layout_height="@dimen/height_toolbar"
+        android:padding="@dimen/margin_normal">
+        <ImageView
+            android:id="@+id/toolbar_back"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ic_back"
+            android:tint="@color/colorPrimary" />
+        <TextView
+            android:id="@+id/toolbar_title"
+            style="@style/h1"
+            android:text="@string/detail_title"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/margin_normal"/>
+
+    </LinearLayout>
+    <TextView
+        style="@style/divider"
+        android:background="@color/grey400"/>
+
+<android.support.v4.widget.NestedScrollView
+    style="@style/div">
+
+    <LinearLayout
+        style="@style/div.vlist">
+
+        <RelativeLayout
+            style="@style/div">
+
+            <ImageView
+                android:id="@+id/profile_background"
+                style="@style/div"
+                android:layout_alignParentTop="true"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                android:minHeight="60dp"
+                android:background="@color/deeppurple100"/>
+
+            <TextView
+                android:id="@+id/profile_edit"
+                style="@style/button.profile"
+                android:text="@string/profile_edit"
+                android:layout_below="@id/profile_background"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:layout_marginRight="@dimen/margin_normal"/>
+
+            <RelativeLayout
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@mipmap/ic_round"
+                android:padding="3dp"
+                android:layout_alignBottom="@id/profile_edit"
+                android:layout_marginLeft="@dimen/margin_normal">
+                <ImageView
+                    android:id="@+id/profile_avatar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="6dp"
+                    android:layout_centerInParent="true"/>
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            style="@style/div"
+            android:layout_margin="@dimen/margin_normal">
+
+            <TextView
+                android:id="@+id/profile_name"
+                style="@style/h1"
+                android:layout_width="wrap_content"
+                android:text="username"
+                android:layout_toRightOf="@id/detail_avatar"
+                android:layout_alignParentTop="true"/>
+
+            <ImageView
+                android:id="@+id/profile_verified"
+                android:layout_width="@dimen/icon"
+                android:layout_height="@dimen/icon"
+                android:src="@mipmap/ic_verified"
+                android:layout_toRightOf="@id/profile_name"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="@dimen/margin_normal"/>
+
+            <TextView
+                android:id="@+id/profile_twitter"
+                style="@style/p"
+                android:layout_width="wrap_content"
+                android:text="twitter"
+                android:layout_toRightOf="@id/detail_avatar"
+                android:layout_below="@id/profile_name"
+                android:layout_marginTop="@dimen/margin_mid"/>
+
+            <ImageView
+                android:id="@+id/profile_link_icon"
+                android:layout_width="@dimen/icon"
+                android:layout_height="@dimen/icon"
+                android:src="@mipmap/ic_link"
+                android:tint="@color/grey800"
+                android:layout_below="@id/profile_twitter"
+                android:layout_marginTop="@dimen/margin_mid"/>
+
+            <TextView
+                android:id="@+id/profile_link"
+                style="@style/p"
+                android:layout_width="wrap_content"
+                android:text="link"
+                android:layout_below="@id/profile_twitter"
+                android:layout_toRightOf="@id/profile_link_icon"
+                android:layout_marginLeft="@dimen/margin_mid"
+                android:layout_marginTop="@dimen/margin_mid"
+                android:textColor="@color/blue700"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            style="@style/div.hlist"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_marginRight="@dimen/margin_normal">
+            <TextView
+                android:id="@+id/profile_following"
+                style="@style/p"
+                android:layout_width="wrap_content"
+                android:text="0"
+                android:textStyle="bold"/>
+            <TextView
+                style="@style/p"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="@dimen/margin_mid"
+                android:text="@string/profile_following"/>
+            <TextView
+                android:id="@+id/profile_followers"
+                style="@style/p"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="@dimen/margin_normal"
+                android:text="0"
+                android:textStyle="bold"/>
+            <TextView
+                style="@style/p"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="@dimen/margin_mid"
+                android:text="@string/profile_followers"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</android.support.v4.widget.NestedScrollView>
+
+</LinearLayout>

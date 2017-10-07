@@ -1,7 +1,10 @@
 package com.mintminter.simpletwitter.common;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.text.format.DateUtils;
 
 import com.mintminter.simpletwitter.R;
@@ -163,5 +166,13 @@ public class Util {
                 return count/1000000 + "M";
             }
         }
+    }
+
+    public static void openBrowser(Context context, String sUrl){
+        String url = sUrl;
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(i);
     }
 }

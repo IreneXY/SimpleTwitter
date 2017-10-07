@@ -191,7 +191,7 @@ public class MentionFragment extends Fragment implements RequestTweetsCallback {
             mLoadingArea.setVisibility(View.GONE);
             mSwipe.setRefreshing(false);
             if(mTimeLineAdapter == null) {
-                mTimeLineAdapter = new TimelineAdapter(getActivity(), mTweets, MentionFragment.this);
+                mTimeLineAdapter = new TimelineAdapter(getActivity(), mTweets, mUser, MentionFragment.this);
                 mTimelineList.setAdapter(mTimeLineAdapter);
             }else{
                 if(mPreviousLastTweet == null){

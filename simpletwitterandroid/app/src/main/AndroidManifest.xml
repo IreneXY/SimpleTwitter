@@ -32,11 +32,23 @@
                     android:scheme="@string/twitter_oauth_scheme" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activity.HomeActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.ComposeActivity" />
-        <activity android:name=".activity.DetailActivity"></activity>
+
+        <activity android:name=".activity.ComposeActivity"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".activity.DetailActivity"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".activity.ProfileActivity"
+            android:screenOrientation="portrait" >
+            <meta-data android:name="com.mintminter.simpletwitter.common.GlideConfiguration"
+                android:value="GlideModule"/>
+        </activity>
+
     </application>
 
 </manifest>

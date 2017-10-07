@@ -131,6 +131,7 @@
                     android:layout_weight="1"
                     android:gravity="center">
                     <ImageView
+                        android:id="@+id/tweet_message_icon"
                         android:layout_width="@dimen/actionicon"
                         android:layout_height="@dimen/actionicon"
                         android:src="@mipmap/ic_message"

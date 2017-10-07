@@ -227,7 +227,7 @@ public class TimelineFragment extends Fragment implements RequestTweetsCallback 
             mLoadingArea.setVisibility(View.GONE);
             mSwipe.setRefreshing(false);
             if(mTimeLineAdapter == null) {
-                mTimeLineAdapter = new TimelineAdapter(getActivity(), mTweets, TimelineFragment.this);
+                mTimeLineAdapter = new TimelineAdapter(getActivity(), mTweets, mUser, TimelineFragment.this);
                 mTimelineList.setAdapter(mTimeLineAdapter);
             }else{
                 if(mPreviousLastTweet == null){

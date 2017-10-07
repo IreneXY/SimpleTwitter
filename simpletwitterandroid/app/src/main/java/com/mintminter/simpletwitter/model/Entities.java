@@ -13,6 +13,7 @@ import java.util.ArrayList;
 @Parcel
 public class Entities extends Data {
     public ArrayList<Media> media = new ArrayList<>();
+    public ArrayList<UserUrl> urls = new ArrayList<>();
 
     @Override
     public void fromJson(JSONObject json) {
@@ -33,6 +34,23 @@ public class Entities extends Data {
 
             }
         }
+
+        if(json.has("url")){
+            JSONObject urlWrap = json.optJSONObject("url");
+            if(urlWrap != null && urlWrap.has("urls")){
+                JSONArray urlJsons = urlWrap.optJSONArray("urls");
+                for(int i = 0; i < urlJsons.length(); i++){
+                    try {
+                        JSONObject userUrlJson = (JSONObject) urlJsons.get(i);
+                        UserUrl userUrl = new UserUrl();
+                        userUrl.fromJson(userUrlJson);
+                        urls.add(userUrl);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -47,6 +65,25 @@ public class Entities extends Data {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        if(urls.size() > 0){
+            JSONArray userUrlArray = new JSONArray();
+            for(int i = 0; i < urls.size(); i++){
+                userUrlArray.put(urls.get(i).toJson());
+            }
+            JSONObject urlJson = new JSONObject();
+            try {
+                urlJson.put("urls", userUrlArray);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            try {
+                json.put("url", urlJson);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
         return json;
     }
 }

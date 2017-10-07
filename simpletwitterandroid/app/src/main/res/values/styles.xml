@@ -68,4 +68,9 @@
         <item name="android:paddingRight">@dimen/corner_button</item>
     </style>
 
+    <style name="button.profile" parent="button">
+        <item name="android:background">@drawable/bg_btn_profile</item>
+        <item name="android:textColor">@color/grey600</item>
+    </style>
+
 </resources>

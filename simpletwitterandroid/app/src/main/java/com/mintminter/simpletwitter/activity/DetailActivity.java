@@ -1,10 +1,8 @@
 package com.mintminter.simpletwitter.activity;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.provider.ContactsContract;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -113,12 +111,12 @@ public class DetailActivity extends AppCompatActivity {
         mReplyArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openDetail();
+                openReply();
             }
         });
     }
 
-    private void openDetail(){
+    private void openReply(){
         Intent i = new Intent(this, ComposeActivity.class);
         i.putExtra(Util.EXTRA_TWEET, Parcels.wrap(mTweet));
         i.putExtra(Util.EXTRA_USER, Parcels.wrap(mUser));

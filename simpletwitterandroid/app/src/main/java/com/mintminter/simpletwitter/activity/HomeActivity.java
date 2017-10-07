@@ -96,11 +96,23 @@ public class HomeActivity extends AppCompatActivity {
                             .load(mUser.profile_image_url)
                             .apply(RequestOptions.circleCropTransform())
                             .into(mUserAvtar);
+                    mUserAvtar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            openProfile();
+                        }
+                    });
                     setViewPager();
                 }
             });
         }
     };
+
+    private void openProfile(){
+        Intent i = new Intent(this, ProfileActivity.class);
+        i.putExtra(Util.EXTRA_USER, Parcels.wrap(mUser));
+        startActivity(i);
+    }
 
     private void getUser(){
         //TwitterClient twitterClient = (TwitterClient) TwitterClient.getInstance(TwitterClient.class, this);

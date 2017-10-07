@@ -16,5 +16,8 @@
     <string name="draft_yes">Yes, please.</string>
     <string name="draft_no">No, thank you.</string>
     <string name="detail_title">Tweet Detail</string>
+    <string name="profile_edit">Edit Profile</string>
+    <string name="profile_following">Following</string>
+    <string name="profile_followers">Followers</string>
 
 </resources>
