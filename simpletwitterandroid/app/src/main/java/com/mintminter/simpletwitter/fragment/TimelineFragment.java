@@ -136,13 +136,13 @@ public class TimelineFragment extends Fragment implements RequestTweetsCallback 
     private void getTimeline(int count, long since_id, long max_id){
         //TwitterClient twitterClient = (TwitterClient) TwitterClient.getInstance(TwitterClient.class, this);
         SimpleTwitterApplication.getRestClient().getHomeTimeline(count, since_id, max_id, mTimelineHandler);
-        Util.setApiRequestTime(getActivity());
+        Util.setApiRequestTime(getActivity(), Util.REQUESTTYPE_HOMETIMELINE);
     }
 
     @Override
     public void requestMoreTweets(Tweet lastTweet) {
         mPreviousLastTweet = lastTweet;
-        final long interval = Util.nextRequestInterval(getActivity(), Util.WINDOW_TIMELINE);
+        final long interval = Util.nextRequestInterval(getActivity(), Util.WINDOW_TIMELINE, Util.REQUESTTYPE_HOMETIMELINE);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -154,7 +154,7 @@ public class TimelineFragment extends Fragment implements RequestTweetsCallback 
     @Override
     public void requestNewTweets(final Tweet sinceTweet) {
         //mUpdatingArea.setVisibility(View.VISIBLE);
-        final long interval = Util.nextRequestInterval(getActivity(), Util.WINDOW_TIMELINE);
+        final long interval = Util.nextRequestInterval(getActivity(), Util.WINDOW_TIMELINE, Util.REQUESTTYPE_HOMETIMELINE);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

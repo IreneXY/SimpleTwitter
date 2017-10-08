@@ -19,5 +19,8 @@
     <string name="profile_edit">Edit Profile</string>
     <string name="profile_following">Following</string>
     <string name="profile_followers">Followers</string>
+    <string name="profile_tweets">Tweets</string>
+    <string name="profile_photos">Photos</string>
+    <string name="profile_likes">Likes</string>
 
 </resources>

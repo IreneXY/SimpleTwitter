@@ -68,14 +68,6 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-//    private void addTimelineFragment(){
-//        FragmentManager fragMan = getSupportFragmentManager();
-//        FragmentTransaction fragTransaction = fragMan.beginTransaction();
-//        Fragment timelineFragment = TimelineFragment.newInstance(mUser);
-//        fragTransaction.add(mFragmentContainer.getId(), timelineFragment , TimelineFragment.TAG);
-//        fragTransaction.commitAllowingStateLoss();
-//    }
-
     private void setViewPager(){
         mViewPager.setAdapter(new FragmentAdapter(this, getSupportFragmentManager(), mUser));
         mTabLayout.setupWithViewPager(mViewPager);

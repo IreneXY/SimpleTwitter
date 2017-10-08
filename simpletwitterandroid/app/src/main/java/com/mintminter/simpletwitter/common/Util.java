@@ -37,6 +37,7 @@ public class Util {
 
     public static final int TWITTERCOUNT = 200;
     public static final int TWITTERCOUNT_MAX = 200;
+    public static final int PROFILETIMELINECOUNT = 10;
 
     public static final int CHARACTERCOUNT_MAX = 140;
 
@@ -44,6 +45,13 @@ public class Util {
 
     public static final int WINDOW_TIMELINE = 60;
     public static final int WINDOW_MENTION = 12;
+    public static final int WINDOW_USERTIMELINE = 1;
+    public static final int WINDOW_FAVORITE = 12;
+
+    public static final String REQUESTTYPE_HOMETIMELINE= "HOMETIMELINE";
+    public static final String REQUESTTYPE_MENTIONTIMELINE= "MENTIONTIMELINE";
+    public static final String REQUESTTYPE_USERTIMELINE= "USERTIMELINE";
+    public static final String REQUESTTYPE_FAVORITE = "FAVORITE";
 
     public static int getColor(Context context, int colorId){
         return context.getResources().getColor(colorId);
@@ -141,18 +149,18 @@ public class Util {
         setStringValue(context, KEY_DRAFT, draft);
     }
 
-    public static void setApiRequestTime(Context context){
-        setLongValue(context, SETTINGSKEY_REQUESTTIME, Calendar.getInstance().getTimeInMillis());
+    public static void setApiRequestTime(Context context, String type){
+        setLongValue(context, SETTINGSKEY_REQUESTTIME+type, Calendar.getInstance().getTimeInMillis());
     }
 
-    public static long getApiRequestTime(Context context){
-        return getLongValue(context, SETTINGSKEY_REQUESTTIME);
+    public static long getApiRequestTime(Context context, String type){
+        return getLongValue(context, SETTINGSKEY_REQUESTTIME+type);
     }
 
-    public static long nextRequestInterval(Context context, int windowSeconds){
-        long lastRequestTime = getApiRequestTime(context);
+    public static long nextRequestInterval(Context context, int windowSeconds, String type){
+        long lastRequestTime = getApiRequestTime(context, type);
         long currentTime = Calendar.getInstance().getTimeInMillis();
-        long interval = (windowSeconds+1)*1000 - getTimeDiff(lastRequestTime, currentTime, TimeUnit.MILLISECONDS);
+        long interval = windowSeconds*1000 + 100 - getTimeDiff(lastRequestTime, currentTime, TimeUnit.MILLISECONDS);
         return interval > 0 ? interval : 0;
     }
 

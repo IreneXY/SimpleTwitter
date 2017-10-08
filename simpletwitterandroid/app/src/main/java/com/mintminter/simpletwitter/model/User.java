@@ -35,7 +35,6 @@ public class User extends Data {
         if(json == null || json.length() == 0){
             return;
         }
-        Log.i("Irene", "user = " + json.toString());
         name = json.optString("name", "");
         id_str = json.optString("id_str", "");
         profile_image_url = json.optString("profile_image_url", "");

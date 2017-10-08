@@ -65,6 +65,42 @@ public class TwitterClient extends OAuthBaseClient {
         getClient().get(apiUrl, params, handler);
     }
 
+    public void getUserTimeline(long user_id, int count, long since_id, long max_id, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("statuses/user_timeline.json");
+        RequestParams params = new RequestParams();
+        params.put("user_id", user_id);
+        if(count > 0 && count <= Util.TWITTERCOUNT_MAX) {
+            params.put("count", count);
+        }else{
+            params.put("count", Util.TWITTERCOUNT_MAX);
+        }
+        if(since_id > 0) {
+            params.put("since_id", since_id);
+        }
+        if(max_id > 0) {
+            params.put("max_id", max_id);
+        }
+        getClient().get(apiUrl, params, handler);
+    }
+
+    public void getFavoritesTimeline(long user_id, int count, long since_id, long max_id, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("favorites/list.json");
+        RequestParams params = new RequestParams();
+        params.put("user_id", user_id);
+        if(count > 0 && count <= Util.TWITTERCOUNT_MAX) {
+            params.put("count", count);
+        }else{
+            params.put("count", Util.TWITTERCOUNT_MAX);
+        }
+        if(since_id > 0) {
+            params.put("since_id", since_id);
+        }
+        if(max_id > 0) {
+            params.put("max_id", max_id);
+        }
+        getClient().get(apiUrl, params, handler);
+    }
+
     public void getCredentials(AsyncHttpResponseHandler handler){
         String apiUrl = getApiUrl("account/verify_credentials.json");
         RequestParams params = new RequestParams();

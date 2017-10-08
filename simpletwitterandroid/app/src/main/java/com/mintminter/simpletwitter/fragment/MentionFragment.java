@@ -119,13 +119,13 @@ public class MentionFragment extends Fragment implements RequestTweetsCallback {
     private void getMention(int count, long since_id, long max_id){
         //TwitterClient twitterClient = (TwitterClient) TwitterClient.getInstance(TwitterClient.class, this);
         SimpleTwitterApplication.getRestClient().getMention(count, since_id, max_id, mMentionHandler);
-        Util.setApiRequestTime(getActivity());
+        Util.setApiRequestTime(getActivity(), Util.REQUESTTYPE_MENTIONTIMELINE);
     }
 
     @Override
     public void requestMoreTweets(Tweet lastTweet) {
         mPreviousLastTweet = lastTweet;
-        final long interval = Util.nextRequestInterval(getActivity(), Util.WINDOW_MENTION);
+        final long interval = Util.nextRequestInterval(getActivity(), Util.WINDOW_MENTION, Util.REQUESTTYPE_MENTIONTIMELINE);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -137,7 +137,7 @@ public class MentionFragment extends Fragment implements RequestTweetsCallback {
     @Override
     public void requestNewTweets(final Tweet sinceTweet) {
         //mUpdatingArea.setVisibility(View.VISIBLE);
-        final long interval = Util.nextRequestInterval(getActivity(), Util.WINDOW_MENTION);
+        final long interval = Util.nextRequestInterval(getActivity(), Util.WINDOW_MENTION, Util.REQUESTTYPE_MENTIONTIMELINE);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

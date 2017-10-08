@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/profile_toolbar"
         style="@style/div.hlist"
         android:layout_height="@dimen/height_toolbar"
         android:padding="@dimen/margin_normal">
@@ -28,6 +31,7 @@
         android:background="@color/grey400"/>
 
 <android.support.v4.widget.NestedScrollView
+    android:id="@+id/profile_scrollview"
     style="@style/div">
 
     <LinearLayout
@@ -153,6 +157,21 @@
 
         </LinearLayout>
 
+        <android.support.design.widget.TabLayout
+            android:id="@+id/profile_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:background="@color/white"
+            app:tabTextAppearance="@style/user"
+            app:tabSelectedTextColor="@color/colorPrimary"
+            app:tabIndicatorColor="@color/colorPrimary"
+            app:tabMode="fixed" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/profile_timeline"
+            android:layout_margin="@dimen/margin_normal"
+            style="@style/div"/>
 
     </LinearLayout>
 

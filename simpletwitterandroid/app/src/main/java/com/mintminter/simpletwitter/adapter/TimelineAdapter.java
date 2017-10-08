@@ -36,12 +36,18 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private ArrayList<Tweet> mTweets = new ArrayList<>();
     private RequestTweetsCallback mRequestTweetsCallback;
     private User mCurrentUser;
+    private boolean mAutoReload = true;
 
     public TimelineAdapter(Context context, ArrayList<Tweet> tweets, User currentUser, RequestTweetsCallback callback){
+        this(context, tweets, currentUser, true, callback);
+    }
+
+    public TimelineAdapter(Context context, ArrayList<Tweet> tweets, User currentUser, boolean autoReload, RequestTweetsCallback callback){
         mContext = context;
         mTweets = tweets;
         mRequestTweetsCallback = callback;
         mCurrentUser = currentUser;
+        mAutoReload = autoReload;
     }
 
     public void insertNewTweets(ArrayList<Tweet> newTweets){
@@ -185,12 +191,15 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 mMessageIcon.setImageResource(R.mipmap.ic_message);
             }
 
-            if(position == mTweets.size() - 5){
-                mRequestTweetsCallback.requestMoreTweets(getLastTweet());
-            }
+            if(mAutoReload) {
 
-            if(position == mTweets.size() - 1){
-                mRequestTweetsCallback.setLoadingUi();
+                if (position == mTweets.size() - 5) {
+                    mRequestTweetsCallback.requestMoreTweets(getLastTweet());
+                }
+
+                if (position == mTweets.size() - 1) {
+                    mRequestTweetsCallback.setLoadingUi();
+                }
             }
         }
     }
