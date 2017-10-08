@@ -28,7 +28,7 @@
         style="@style/divider"
         android:background="@color/grey400"/>
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         style="@style/div">
         <LinearLayout
             style="@style/div.vlist"
@@ -96,6 +96,7 @@
             <LinearLayout
                 style="@style/div.hlist"
                 android:layout_marginTop="@dimen/margin_mid"
+                android:layout_marginBottom="30dp"
                 android:weightSum="4">
 
                 <LinearLayout
@@ -171,9 +172,6 @@
 
         </LinearLayout>
 
-    </ScrollView>
-
-
-
+    </android.support.v4.widget.NestedScrollView>
 
 </LinearLayout>

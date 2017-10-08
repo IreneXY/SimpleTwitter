@@ -34,7 +34,7 @@ public class FragmentAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if(position == 0){
-            return TimelineFragment.newInstance(mUser);
+            return TimelineFragment.getInstance(mUser);
         }else{
             return MentionFragment.newInstance(mUser);
         }

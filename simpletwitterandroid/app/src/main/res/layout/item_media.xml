@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/div"
+    android:layout_marginBottom="@dimen/margin_mid">
+
+    <ImageView
+        android:id="@+id/tweet_image"
+        style="@style/div"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/margin_mid"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        style="@style/div.hlist"
+        android:layout_marginTop="@dimen/margin_mid"
+        android:weightSum="4"
+        android:background="@color/black_semi_bb"
+        android:padding="@dimen/margin_mid"
+        android:layout_alignParentBottom="true">
+
+        <LinearLayout
+            android:id="@+id/tweet_reply"
+            style="@style/div.hlist"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="left|center_vertical">
+            <ImageView
+                android:layout_width="@dimen/actionicon"
+                android:layout_height="@dimen/actionicon"
+                android:src="@mipmap/ic_reply"
+                android:tint="@color/deeppurple50"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tweet_retweet"
+            style="@style/div.hlist"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="left|center_vertical">
+            <ImageView
+                android:layout_width="@dimen/actionicon"
+                android:layout_height="@dimen/actionicon"
+                android:src="@mipmap/ic_retweet"
+                android:tint="@color/deeppurple50"/>
+            <TextView
+                android:id="@+id/tweet_retweetcount"
+                style="@style/sub"
+                android:layout_marginLeft="@dimen/margin_mid"
+                android:textColor="@color/deeppurple50"
+                android:text="123" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tweet_fav"
+            style="@style/div.hlist"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="left|center_vertical">
+            <ImageView
+                android:id="@+id/tweet_fav_icon"
+                android:layout_width="@dimen/actionicon"
+                android:layout_height="@dimen/actionicon"
+                android:src="@mipmap/ic_heart"
+                android:tint="@color/deeppurple50"/>
+            <TextView
+                android:id="@+id/tweet_favcount"
+                style="@style/sub"
+                android:layout_marginLeft="@dimen/margin_mid"
+                android:textColor="@color/deeppurple50"
+                android:text="count" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tweet_message"
+            style="@style/div.hlist"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/tweet_message_icon"
+                android:layout_width="@dimen/actionicon"
+                android:layout_height="@dimen/actionicon"
+                android:src="@mipmap/ic_message"
+                android:tint="@color/deeppurple50"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,5 +1,6 @@
 package com.mintminter.simpletwitter.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import com.mintminter.simpletwitter.model.User;
 import org.parceler.Parcels;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class DetailActivity extends AppCompatActivity {
@@ -120,6 +122,11 @@ public class DetailActivity extends AppCompatActivity {
         Intent i = new Intent(this, ComposeActivity.class);
         i.putExtra(Util.EXTRA_TWEET, Parcels.wrap(mTweet));
         i.putExtra(Util.EXTRA_USER, Parcels.wrap(mUser));
-        startActivity(i);
+        startActivityForResult(i, Util.REQUESTCODE_COMPOSE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        setResult(resultCode, data);
     }
 }

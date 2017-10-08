@@ -1,6 +1,5 @@
 package com.mintminter.simpletwitter.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -16,49 +15,62 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.mintminter.simpletwitter.R;
-import com.mintminter.simpletwitter.activity.ComposeActivity;
-import com.mintminter.simpletwitter.activity.DetailActivity;
 import com.mintminter.simpletwitter.activity.ProfileActivity;
 import com.mintminter.simpletwitter.common.Util;
 import com.mintminter.simpletwitter.interfaces.RequestTweetsCallback;
 import com.mintminter.simpletwitter.model.Tweet;
 import com.mintminter.simpletwitter.model.User;
 
-import org.parceler.Parcel;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
 /**
- * Created by Irene on 9/30/17.
+ * Created by Irene on 10/7/17.
  */
 
-public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MediaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
     private ArrayList<Tweet> mTweets = new ArrayList<>();
+    private ArrayList<Tweet> mMediaTweets = new ArrayList<>();
     private RequestTweetsCallback mRequestTweetsCallback;
     private User mCurrentUser;
     private boolean mAutoReload = true;
 
-    public TimelineAdapter(Context context, ArrayList<Tweet> tweets, User currentUser, RequestTweetsCallback callback){
+    public MediaAdapter(Context context, ArrayList<Tweet> tweets, User currentUser, RequestTweetsCallback callback){
         this(context, tweets, currentUser, true, callback);
     }
 
-    public TimelineAdapter(Context context, ArrayList<Tweet> tweets, User currentUser, boolean autoReload, RequestTweetsCallback callback){
+    public MediaAdapter(Context context, ArrayList<Tweet> tweets, User currentUser, boolean autoReload, RequestTweetsCallback callback){
         mContext = context;
         mTweets = tweets;
         mRequestTweetsCallback = callback;
         mCurrentUser = currentUser;
         mAutoReload = autoReload;
+        extractMediaTweets(mTweets);
+    }
+
+    public boolean extractMediaTweets(ArrayList<Tweet> tweets){
+        boolean res = false;
+        for(Tweet t : tweets){
+            String imageUrl = Util.getTweetImageUrl(t);
+            if(!TextUtils.isEmpty(imageUrl)){
+                mMediaTweets.add(t);
+                res = true;
+            }
+        }
+        return res;
     }
 
     public void insertNewTweets(ArrayList<Tweet> newTweets){
         mTweets.addAll(0,newTweets);
+        extractMediaTweets(newTweets);
         notifyDataSetChanged();
     }
 
     public void appendOldTweets(ArrayList<Tweet> newTweets){
         mTweets.addAll(newTweets);
+        extractMediaTweets(newTweets);
         notifyDataSetChanged();
     }
 
@@ -72,26 +84,21 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new TweetViewHolder((LayoutInflater.from(parent.getContext()).inflate(R.layout.item_tweet, parent, false)));
+        return new MediaViewHolder((LayoutInflater.from(parent.getContext()).inflate(R.layout.item_media, parent, false)));
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((TweetViewHolder) holder).bind(position);
+        ((MediaViewHolder) holder).bind(position);
     }
 
     @Override
     public int getItemCount() {
-        return mTweets.size();
+        return mMediaTweets.size();
     }
 
-    class TweetViewHolder extends RecyclerView.ViewHolder{
-        private ImageView mAvatar;
-        private TextView mUsername;
-        private ImageView mVerified;
-        private TextView mUserTwitter;
-        private TextView mTime;
-        private TextView mContent;
+    class MediaViewHolder extends RecyclerView.ViewHolder{
+
         private ImageView mBanner;
         private LinearLayout mReplyArea;
         private LinearLayout mRetweetArea;
@@ -103,15 +110,9 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         private ImageView mMessageIcon;
         private View mItemView;
 
-        public TweetViewHolder(View itemView) {
+        public MediaViewHolder(View itemView) {
             super(itemView);
             mItemView = itemView;
-            mAvatar = (ImageView) itemView.findViewById(R.id.tweet_avatar);
-            mUsername = (TextView) itemView.findViewById(R.id.tweet_username);
-            mVerified = (ImageView) itemView.findViewById(R.id.tweet_verified);
-            mUserTwitter = (TextView) itemView.findViewById(R.id.tweet_address);
-            mTime = (TextView) itemView.findViewById(R.id.tweet_time);
-            mContent = (TextView) itemView.findViewById(R.id.tweet_text);
             mBanner = (ImageView) itemView.findViewById(R.id.tweet_image);
             mReplyArea = (LinearLayout) itemView.findViewById(R.id.tweet_reply);
             mRetweetArea = (LinearLayout) itemView.findViewById(R.id.tweet_retweet);
@@ -124,34 +125,14 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
 
         public void bind(int position){
-            final Tweet tweet = mTweets.get(position);
+            final Tweet tweet = mMediaTweets.get(position);
             mItemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mRequestTweetsCallback.openDetail(tweet);
                 }
             });
-            Glide.with(mContext)
-                    .load(tweet.user.profile_image_url)
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(mAvatar);
-            mAvatar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent i = new Intent(mContext, ProfileActivity.class);
-                    i.putExtra(Util.EXTRA_USER, Parcels.wrap(tweet.user));
-                    mContext.startActivity(i);
-                }
-            });
-            mUsername.setText(tweet.user.name);
-            if(tweet.user.verified){
-                mVerified.setVisibility(View.VISIBLE);
-            }else{
-                mVerified.setVisibility(View.GONE);
-            }
-            mUserTwitter.setText(Util.genUserTwitter(tweet.user.screen_name));
-            mTime.setText(Util.formatCreatedTime(tweet.created_at_in_ms));
-            mContent.setText(tweet.text);
+
             String imageUrl = Util.getTweetImageUrl(tweet);
             if(!TextUtils.isEmpty(imageUrl)){
                 mBanner.setVisibility(View.VISIBLE);
@@ -167,17 +148,6 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }else{
                 mFavIcon.setImageResource(R.mipmap.ic_heart);
             }
-
-            mReplyArea.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent i = new Intent(mContext, ComposeActivity.class);
-                    i.putExtra(Util.EXTRA_TWEET, Parcels.wrap(tweet));
-                    i.putExtra(Util.EXTRA_USER, Parcels.wrap(mCurrentUser));
-                    ((Activity)mContext).startActivityForResult(i, Util.REQUESTCODE_COMPOSE);
-                }
-            });
-
             mFavCount.setText(Util.formatCount(tweet.favorite_count));
             mRetweetArea.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -56,12 +56,17 @@ public class TimelineFragment extends Fragment implements RequestTweetsCallback 
     private Tweet mPreviousLastTweet;
     private User mUser;
 
-    public static TimelineFragment newInstance(User user){
-        TimelineFragment fragment = new TimelineFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(Util.EXTRA_USER, Parcels.wrap(user));
-        fragment.setArguments(args);
-        return fragment;
+    private static TimelineFragment mFragment;
+
+    public static TimelineFragment getInstance(User user){
+        if(mFragment == null) {
+            mFragment = new TimelineFragment();
+            Bundle args = new Bundle();
+            args.putParcelable(Util.EXTRA_USER, Parcels.wrap(user));
+            mFragment.setArguments(args);
+        }
+
+        return mFragment;
     }
 
     @Override
@@ -173,7 +178,7 @@ public class TimelineFragment extends Fragment implements RequestTweetsCallback 
         Intent i = new Intent(getActivity(), DetailActivity.class);
         i.putExtra(Util.EXTRA_TWEET, Parcels.wrap(tweet));
         i.putExtra(Util.EXTRA_USER, Parcels.wrap(mUser));
-        startActivity(i);
+        startActivityForResult(i, Util.REQUESTCODE_COMPOSE);
     }
 
     @Override

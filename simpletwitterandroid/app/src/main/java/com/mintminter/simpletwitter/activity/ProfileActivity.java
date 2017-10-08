@@ -22,6 +22,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.mintminter.simpletwitter.R;
 import com.mintminter.simpletwitter.SimpleTwitterApplication;
+import com.mintminter.simpletwitter.adapter.MediaAdapter;
 import com.mintminter.simpletwitter.adapter.TimelineAdapter;
 import com.mintminter.simpletwitter.common.Util;
 import com.mintminter.simpletwitter.interfaces.RequestTweetsCallback;
@@ -60,6 +61,7 @@ public class ProfileActivity extends AppCompatActivity implements RequestTweetsC
     private LinearLayoutManager mLinearLayoutManager;
     private TimelineAdapter mTweetsAdapter;
     private TimelineAdapter mFavoritesAdapter;
+    private MediaAdapter mPhotoAdapter;
     private NestedScrollView mProfileScrollView;
 
     private ProgressDialog mProgressDialog;
@@ -152,7 +154,6 @@ public class ProfileActivity extends AppCompatActivity implements RequestTweetsC
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int index = tab.getPosition();
-                Toast.makeText(getApplicationContext(), tab.getText(), Toast.LENGTH_SHORT).show();
                 switch (index){
                     case 0:
                         if(mTweetsAdapter != null){
@@ -162,7 +163,11 @@ public class ProfileActivity extends AppCompatActivity implements RequestTweetsC
                         }
                         break;
                     case 1:
-
+                        if(mPhotoAdapter != null){
+                            mProfileTimeline.setAdapter(mPhotoAdapter);
+                        }else{
+                            requestMoreTweets(null);
+                        }
                         break;
                     case 2:
                         if(mFavoritesAdapter != null){
@@ -203,7 +208,7 @@ public class ProfileActivity extends AppCompatActivity implements RequestTweetsC
                             requestMoreTweets(mTweetsAdapter.getLastTweet());
                             break;
                         case 1:
-
+                            requestMoreTweets(mPhotoAdapter.getLastTweet());
                             break;
                         case 2:
                             requestMoreTweets(mFavoritesAdapter.getLastTweet());
@@ -269,6 +274,7 @@ public class ProfileActivity extends AppCompatActivity implements RequestTweetsC
                 requestMoreTweetsTimeline();
                 break;
             case 1:
+                requestMoreMediaTimeline();
                 break;
             case 2:
                 requestFavoritesTimeline();
@@ -287,6 +293,22 @@ public class ProfileActivity extends AppCompatActivity implements RequestTweetsC
                 @Override
                 public void run() {
                     getTweetsTimeline(mUser.id, Util.PROFILETIMELINECOUNT, 0, mPreviousLastTweet.id);
+                }
+            }, interval);
+        }
+    }
+
+    private void requestMoreMediaTimeline(){
+        Log.i("Irene", "@requestMoreMediaTimeline");
+        if(mPreviousLastTweet == null){
+            mProgressDialog.show();
+            getTweetsTimeline(mUser.id, Util.PROFILETIMELINECOUNT*2, 0, 0);
+        }else {
+            final long interval = Util.nextRequestInterval(this, Util.WINDOW_USERTIMELINE, Util.REQUESTTYPE_USERTIMELINE);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getTweetsTimeline(mUser.id, Util.PROFILETIMELINECOUNT*2, 0, mPreviousLastTweet.id);
                 }
             }, interval);
         }
@@ -368,6 +390,17 @@ public class ProfileActivity extends AppCompatActivity implements RequestTweetsC
                     }
                     break;
                 case 1:
+                    if(mPhotoAdapter == null) {
+                        mPhotoAdapter = new MediaAdapter(ProfileActivity.this, mTweets, mUser, false, ProfileActivity.this);
+                        mProfileTimeline.setAdapter(mPhotoAdapter);
+                    }else{
+                        if(mPreviousLastTweet == null){
+                            mPhotoAdapter.insertNewTweets(mTweets);
+                        }else{
+                            mPhotoAdapter.appendOldTweets(mTweets);
+                            mPreviousLastTweet = null;
+                        }
+                    }
                     break;
                 case 2:
                     if(mFavoritesAdapter == null) {

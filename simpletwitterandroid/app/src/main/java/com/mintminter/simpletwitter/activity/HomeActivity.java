@@ -1,5 +1,6 @@
 package com.mintminter.simpletwitter.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -10,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -22,11 +24,14 @@ import com.mintminter.simpletwitter.SimpleTwitterApplication;
 import com.mintminter.simpletwitter.adapter.FragmentAdapter;
 import com.mintminter.simpletwitter.common.Util;
 import com.mintminter.simpletwitter.fragment.TimelineFragment;
+import com.mintminter.simpletwitter.model.Tweet;
 import com.mintminter.simpletwitter.model.User;
 import com.mintminter.simpletwitter.widget.NoScrollingViewPager;
 
 import org.json.JSONObject;
 import org.parceler.Parcels;
+
+import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -109,6 +114,11 @@ public class HomeActivity extends AppCompatActivity {
     private void getUser(){
         //TwitterClient twitterClient = (TwitterClient) TwitterClient.getInstance(TwitterClient.class, this);
         SimpleTwitterApplication.getRestClient().getCredentials(mCredentialHandler);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        ((FragmentAdapter) mViewPager.getAdapter()).getItem(0).onActivityResult(requestCode, resultCode, data);
     }
 
 }
