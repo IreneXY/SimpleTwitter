@@ -156,7 +156,7 @@ public class MentionFragment extends Fragment implements RequestTweetsCallback {
         Intent i = new Intent(getActivity(), DetailActivity.class);
         i.putExtra(Util.EXTRA_TWEET, Parcels.wrap(tweet));
         i.putExtra(Util.EXTRA_USER, Parcels.wrap(mUser));
-        startActivity(i);
+        getActivity().startActivity(i);
     }
 
     class GetMentionTask extends AsyncTask<Void, Void, Boolean> {

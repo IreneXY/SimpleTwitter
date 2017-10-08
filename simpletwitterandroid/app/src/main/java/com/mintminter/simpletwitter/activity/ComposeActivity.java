@@ -83,6 +83,7 @@ public class ComposeActivity extends AppCompatActivity {
         }
         mEdit.setText(sDraft);
         mCount.setText((Util.CHARACTERCOUNT_MAX - sDraft.length())+"");
+        mCount.requestFocus();
         mEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

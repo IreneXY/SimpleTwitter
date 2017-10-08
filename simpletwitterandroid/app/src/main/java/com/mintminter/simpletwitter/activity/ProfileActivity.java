@@ -292,7 +292,9 @@ public class ProfileActivity extends AppCompatActivity implements RequestTweetsC
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    getTweetsTimeline(mUser.id, Util.PROFILETIMELINECOUNT, 0, mPreviousLastTweet.id);
+                    if(mUser != null && mPreviousLastTweet != null) {
+                        getTweetsTimeline(mUser.id, Util.PROFILETIMELINECOUNT, 0, mPreviousLastTweet.id);
+                    }
                 }
             }, interval);
         }
@@ -308,7 +310,9 @@ public class ProfileActivity extends AppCompatActivity implements RequestTweetsC
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    getTweetsTimeline(mUser.id, Util.PROFILETIMELINECOUNT*2, 0, mPreviousLastTweet.id);
+                    if(mUser != null && mPreviousLastTweet != null) {
+                        getTweetsTimeline(mUser.id, Util.PROFILETIMELINECOUNT*2, 0, mPreviousLastTweet.id);
+                    }
                 }
             }, interval);
         }
@@ -323,7 +327,9 @@ public class ProfileActivity extends AppCompatActivity implements RequestTweetsC
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    getFavoritesTimeline(mUser.id, Util.PROFILETIMELINECOUNT, 0, mPreviousLastTweet.id);
+                    if(mUser != null && mPreviousLastTweet != null) {
+                        getFavoritesTimeline(mUser.id, Util.PROFILETIMELINECOUNT, 0, mPreviousLastTweet.id);
+                    }
                 }
             }, interval);
         }
